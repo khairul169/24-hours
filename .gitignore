@@ -1,0 +1,5 @@
+# Godot project
+.import/*
+
+# etc
+export_presets.cfg
