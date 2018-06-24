@@ -14,7 +14,7 @@ func _input(event):
 func _ready():
 	# Reset vars
 	game_time = 0.0;
-	timecycle_ratio = 1.0/60.0 * 100.0;
+	timecycle_ratio = 1.0/60.0 * 10.0;
 
 func _process(delta):
 	game_time += timecycle_ratio * delta;

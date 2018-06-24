@@ -1,0 +1,107 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scenes/props/campfire.gd" type="Script" id=1]
+
+[sub_resource type="CubeMesh" id=1]
+
+custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
+flip_faces = false
+size = Vector3( 2, 2, 2 )
+subdivide_width = 0
+subdivide_height = 0
+subdivide_depth = 0
+
+[sub_resource type="Animation" id=2]
+
+resource_name = "idle"
+length = 8.0
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("light:omni_range")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1, 1.8, 2.8, 3.8, 5.4, 6.6, 8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 5.0, 5.77101, 4.3, 5.0, 6.66092, 5.0, 5.4, 5.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("light:light_energy")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.8, 2.4, 4.2, 6, 8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 3.51, 1.85, 2.95, 2.12, 4.05, 3.51 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("light:transform")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 1.2, 2.6, 4, 5.6, 7, 8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15033, 0 ), Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.525906, 1.04336, -0.17511 ), Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0148548, 1.10664, 0.0859973 ), Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.106636, 1.16414, -0.105415 ), Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.365232, 1.07096, 0.183265 ), Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00535655, 1.37912, 0.0916324 ), Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15033, 0 ) ]
+}
+
+[node name="campfire" type="Spatial" index="0"]
+script = ExtResource( 1 )
+_sections_unfolded = [ "Transform" ]
+campfire_range = 6.0
+
+[node name="mesh" type="MeshInstance" parent="." index="0"]
+transform = Transform( 0.174334, 0.0566723, 0, -0.0566723, 0.174334, 0, 0, 0, 0.183314, 0, 0, 0 )
+layers = 1
+material_override = null
+cast_shadow = 1
+extra_cull_margin = 0.0
+use_in_baked_light = false
+lod_min_distance = 0.0
+lod_min_hysteresis = 0.0
+lod_max_distance = 0.0
+lod_max_hysteresis = 0.0
+mesh = SubResource( 1 )
+skeleton = NodePath("..")
+material/0 = null
+
+[node name="light" type="OmniLight" parent="." index="1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.48425e-05, 1.15096, 0.000253901 )
+layers = 1
+light_color = Color( 1, 0.886275, 0.45098, 1 )
+light_energy = 3.51075
+light_indirect_energy = 1.0
+light_negative = false
+light_specular = 0.5
+light_bake_mode = 1
+light_cull_mask = -1
+shadow_enabled = false
+shadow_color = Color( 0, 0, 0, 1 )
+shadow_bias = 0.15
+shadow_contact = 0.0
+shadow_reverse_cull_face = false
+editor_only = false
+omni_range = 5.00079
+omni_attenuation = 1.0
+omni_shadow_mode = 1
+omni_shadow_detail = 1
+_sections_unfolded = [ "Transform" ]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="2"]
+root_node = NodePath("..")
+autoplay = "idle"
+playback_process_mode = 1
+playback_default_blend_time = 0.0
+playback_speed = 1.0
+anims/idle = SubResource( 2 )
+blend_times = [  ]
+

@@ -15,6 +15,7 @@ var status = [];
 var next_step = 0.0;
 var last_time = 0.0;
 var next_check = 0.0;
+var near_firesrc = false;
 
 func _init():
 	# Initialize character
@@ -28,6 +29,8 @@ func _ready():
 	hunger = rand_range(0.7, 0.85);
 	thirst = rand_range(0.6, 0.8);
 	next_step = 0.0;
+	next_check = 0.0;
+	near_firesrc = false;
 
 func _input(event):
 	if (event is InputEventMouseButton):
@@ -49,7 +52,7 @@ func _physics_process(delta):
 func _process(delta):
 	next_step -= delta;
 	if (next_step <= 0.0):
-		next_step = 0.1;
+		next_step = 1.0;
 		update_stats(delta);
 		update_interface();
 	
@@ -83,6 +86,16 @@ func update_stats(delta):
 	if (hunger > 0.4):
 		temp_factor += (hunger - 0.4) / 0.6 * 2.2;
 	
+	# Check if player near a heat source
+	near_firesrc = false;
+	for i in get_tree().get_nodes_in_group("campfire"):
+		if (global_transform.origin.distance_to(i.global_transform.origin) <= i.campfire_range):
+			near_firesrc = true;
+			break;
+	
+	if (near_firesrc):
+		temp_factor = 0.4 + clamp(36.4 - temperature, 0.0, 2.0);
+	
 	if (temperature > 36.8):
 		temp_factor = -0.4;
 	
@@ -105,6 +118,7 @@ func update_interface():
 	$interface/stats_label.text += str("\nTemperature: ", str(temperature).pad_decimals(1));
 	$interface/stats_label.text += str("\nHunger: ", hunger * 100);
 	$interface/stats_label.text += str("\nThirst: ", thirst * 100);
+	$interface/stats_label.text += str("\nnear_firesrc: ", near_firesrc);
 
 func check_stats():
 	if (temperature < 34.0): # Hypothermia
