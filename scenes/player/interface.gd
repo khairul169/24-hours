@@ -1,6 +1,7 @@
 extends Control
 
 # Nodes
+onready var player = get_parent();
 onready var inventory = $inventory;
 
 func _ready():

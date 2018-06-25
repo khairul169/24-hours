@@ -57,7 +57,6 @@ func _process(delta):
 	if (next_step <= 0.0):
 		next_step = 0.1;
 		update_stats(delta);
-		update_interface();
 	
 	if (next_check < scene.game_time):
 		next_check = fmod(scene.game_time + 4.0, 24.0);
@@ -122,21 +121,6 @@ func update_stats(delta):
 	else:
 		can_jump = true;
 		can_sprint = true;
-
-func update_interface():
-	$interface/stats_label.text = str("Time: ", str(scene.game_time).pad_decimals(2));
-	$interface/stats_label.text += str("\nHealth: ", int(health));
-	$interface/stats_label.text += str("\nTemperature: ", str(temperature).pad_decimals(1));
-	$interface/stats_label.text += str("\nHunger: ", hunger * 100);
-	$interface/stats_label.text += str("\nThirst: ", thirst * 100);
-	$interface/stats_label.text += str("\nnear_firesrc: ", near_firesrc);
-	$interface/stats_label.text += str("\n");
-	$interface/stats_label.text += str("\ninventory.capacity: ", inventory.capacity);
-	$interface/stats_label.text += str("\ninventory.cur_capacity: ", inventory.cur_capacity);
-	
-	if (item_picker.highlighted_object != null):
-		$interface/stats_label.text += str("\n");
-		$interface/stats_label.text += str("\nitem_picker.highlighted: ", item_database.get_item_name(item_picker.highlighted_object.id));
 
 func check_stats():
 	if (temperature < 34.0): # Hypothermia
