@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scenes/scene.gd" type="Script" id=1]
 [ext_resource path="res://assets/environment.tres" type="Environment" id=2]
@@ -6,6 +6,8 @@
 [ext_resource path="res://assets/terrain/terrain01.tscn" type="PackedScene" id=4]
 [ext_resource path="res://assets/props/water.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/terrain/background/background01.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/props/campfire.tscn" type="PackedScene" id=7]
+[ext_resource path="res://assets/props/tree/tree01.tscn" type="PackedScene" id=8]
 
 [node name="scene" type="Spatial" index="0"]
 script = ExtResource( 1 )
@@ -16,7 +18,7 @@ environment = ExtResource( 2 )
 _sections_unfolded = [ "environment" ]
 
 [node name="sun" type="DirectionalLight" parent="." index="1"]
-transform = Transform( -0.413847, -0.728037, 0.546529, 0.792277, 0.00764094, 0.610114, -0.448362, 0.685495, 0.573645, 0, 0, 0 )
+transform = Transform( -0.891641, -0.416362, 0.177819, 0.302679, -0.256116, 0.918037, -0.336694, 0.87238, 0.354387, 0, 0, 0 )
 layers = 1
 light_color = Color( 1, 1, 1, 1 )
 light_energy = 1.0
@@ -31,7 +33,7 @@ shadow_bias = 0.1
 shadow_contact = 0.0
 shadow_reverse_cull_face = false
 editor_only = false
-directional_shadow_mode = 2
+directional_shadow_mode = 0
 directional_shadow_split_1 = 0.1
 directional_shadow_split_2 = 0.2
 directional_shadow_split_3 = 0.5
@@ -39,8 +41,8 @@ directional_shadow_blend_splits = false
 directional_shadow_normal_bias = 0.8
 directional_shadow_bias_split_scale = 0.25
 directional_shadow_depth_range = 0
-directional_shadow_max_distance = 200.0
-_sections_unfolded = [ "Light" ]
+directional_shadow_max_distance = 50.0
+_sections_unfolded = [ "Directional Shadow", "Light" ]
 
 [node name="player" parent="." index="2" instance=ExtResource( 3 )]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0 )
@@ -66,4 +68,37 @@ transform = Transform( -24.0675, 0, 15.2003, 0, 28.4657, 0, -15.2003, 0, -24.067
 
 [node name="background5" parent="backgrounds" index="4" instance=ExtResource( 6 )]
 transform = Transform( 28.2665, 0, -3.36166, 0, 28.4657, 0, 3.36166, 0, 28.2665, 392.612, -39.0268, -59.3836 )
+
+[node name="campfire" parent="." index="6" instance=ExtResource( 7 )]
+transform = Transform( 0.970297, -0.241919, 0, 0.241919, 0.970297, 0, 0, 0, 1, 0, -1.10561, -2.4469 )
+
+[node name="trees" type="Spatial" parent="." index="7"]
+editor/display_folded = true
+
+[node name="tree" parent="trees" index="0" instance=ExtResource( 8 )]
+transform = Transform( 0.125422, 0.0393604, -0.991322, -0.0220679, 0.999076, 0.0368762, 0.991858, 0.0172513, 0.126175, -0.187601, -1.31098, -4.71703 )
+
+[node name="tree2" parent="trees" index="1" instance=ExtResource( 8 )]
+transform = Transform( -0.217793, -0.0778984, -0.730134, -0.0222669, 0.761925, -0.0746482, 0.73394, 0, -0.218928, 2.53936, -0.777061, -4.6067 )
+
+[node name="tree3" parent="trees" index="2" instance=ExtResource( 8 )]
+transform = Transform( 0.867851, 0.0617615, 0.492971, -0.0537023, 0.998091, -0.0305049, -0.493914, 0, 0.869511, 10.2303, -0.777061, -10.4742 )
+
+[node name="tree4" parent="trees" index="3" instance=ExtResource( 8 )]
+transform = Transform( 0.721175, -0.052697, 0, 0.052697, 0.721175, 0, 0, 0, 0.723098, 10.2303, -0.0553995, -4.53174 )
+
+[node name="tree5" parent="trees" index="4" instance=ExtResource( 8 )]
+transform = Transform( 0.48137, 0.0273212, -0.717494, -0.0152216, 0.864011, 0.0226881, 0.717853, 0, 0.481611, 7.11237, -0.173601, -5.03701 )
+
+[node name="tree6" parent="trees" index="5" instance=ExtResource( 8 )]
+transform = Transform( 0.179148, 0, -0.845676, 0.0287053, 0.863945, 0.00608091, 0.845189, -0.0293423, 0.179044, 0.829862, -0.760052, 3.02502 )
+
+[node name="tree7" parent="trees" index="6" instance=ExtResource( 8 )]
+transform = Transform( 0.376051, 0, -0.778362, 0.0387566, 0.863371, 0.0187245, 0.777396, -0.0430428, 0.375585, -1.48467, -1.20676, 2.42688 )
+
+[node name="tree8" parent="trees" index="7" instance=ExtResource( 8 )]
+transform = Transform( 0.85706, 0, 0.415237, 0.0115622, 0.951983, -0.0238647, -0.415076, 0.0265181, 0.856728, -1.48467, -1.35268, 4.88143 )
+
+[node name="tree9" parent="trees" index="8" instance=ExtResource( 8 )]
+transform = Transform( 0.463972, -0.0400242, 0.532962, 0.00106836, 0.705838, 0.0520767, -0.534461, -0.0333345, 0.462774, 3.63592, -0.0188071, 4.88143 )
 
