@@ -9,7 +9,7 @@
 [ext_resource path="res://gfps/sounds/land.wav" type="AudioStream" id=7]
 [ext_resource path="res://scripts/player/inventory.gd" type="Script" id=8]
 [ext_resource path="res://gfps/scripts/player/weapon.gd" type="Script" id=9]
-[ext_resource path="res://gfps/scripts/player/firstperson_view.gd" type="Script" id=10]
+[ext_resource path="res://scripts/player/fpview.gd" type="Script" id=10]
 [ext_resource path="res://scripts/player/item_picker.gd" type="Script" id=11]
 
 [sub_resource type="CapsuleShape" id=1]
@@ -87,14 +87,14 @@ current = false
 fov = 60.0
 size = 1.0
 near = 0.01
-far = 100.0
+far = 500.0
 script = ExtResource( 2 )
 _sections_unfolded = [ "Transform" ]
 enabled = true
 Controller = NodePath("..")
 bob_speed = 0.8
-bob_factor = 0.01
-min_weight = 0.5
+bob_factor = 0.015
+min_weight = 1.2
 interpolation = 4.0
 
 [node name="interface" parent="." index="3" instance=ExtResource( 3 )]
@@ -112,7 +112,7 @@ script = ExtResource( 8 )
 [node name="weapon" type="Node" parent="." index="6"]
 script = ExtResource( 9 )
 FirstPersonView = ExtResource( 10 )
-ModelScaling = 0.05
+ModelScaling = 0.2
 EnableScopeRender = false
 ScopeRenderSize = 512.0
 MuzzleFlash = null

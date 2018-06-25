@@ -20,11 +20,16 @@ var last_time = 0.0;
 var next_check = 0.0;
 var near_firesrc = false;
 
+var wpn_fist;
+
 func _init():
 	# Initialize character
 	can_sprint = true;
 
 func _ready():
+	# Setup controller
+	camera_rotation.x = 0.0;
+	
 	# Reset stats
 	randomize();
 	health = rand_range(90.0, 100.0);
@@ -34,6 +39,11 @@ func _ready():
 	next_step = 0.0;
 	next_check = 0.0;
 	near_firesrc = false;
+	
+	# Register weapon
+	wpn_fist = $weapon.register_weapon("res://scripts/weapon/wpn_fist.gd");
+	
+	$weapon.set_current_weapon(wpn_fist);
 
 func _input(event):
 	if (event is InputEventMouseButton):

@@ -1,0 +1,32 @@
+[gd_resource type="Shader" format=2]
+
+[resource]
+
+code = "shader_type spatial;
+uniform float uvscale = 1.0;
+
+varying vec3 normal;
+
+void vertex() {
+	UV = UV * uvscale;
+	normal = NORMAL;
+}
+
+uniform sampler2D snow_tex: hint_albedo;
+uniform sampler2D cliff_tex: hint_albedo;
+uniform float slope_factor = 0.85;
+uniform float slope_blend = 30.0;
+
+void fragment() {
+	float slope = dot(normal, vec3(0, 1, 0));
+	vec3 col = texture(cliff_tex, UV).rgb;
+	
+	if (slope > slope_factor) {
+		float blend = clamp((slope - slope_factor) * slope_blend, 0.0, 1.0);
+		col = mix(col, texture(snow_tex, UV).rgb, blend);
+	}
+	
+	ALBEDO.rgb = col;
+}
+"
+
