@@ -96,7 +96,7 @@ enabled = true
 Controller = NodePath("..")
 bob_speed = 0.8
 bob_factor = 0.01
-min_weight = 1.2
+min_weight = 0.5
 interpolation = 4.0
 
 [node name="sounds" type="Node" parent="." index="3"]

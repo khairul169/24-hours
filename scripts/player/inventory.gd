@@ -1,21 +1,31 @@
 extends Node
 
+# Node
+onready var player = get_parent();
+
+# Variables
 var capacity = 0.0;
 var items = [];
 var cur_capacity = 0.0;
+
+# State
+var next_think = 0.0;
 
 func reset():
 	capacity = 0.0;
 	items.clear();
 	cur_capacity = 0.0;
+	next_think = 0.0;
 
 func _ready():
 	reset();
+
+func _process(delta):
+	next_think -= delta;
 	
-	add_item(item_database.ITEM_STICK, 10);
-	add_item(item_database.ITEM_STICK, 40);
-	add_item(item_database.ITEM_BRANCH, 1);
-	add_item(item_database.ITEM_BRANCH, 3);
+	if (next_think <= 0.0):
+		next_think = 1.0;
+		calculate_capacity();
 
 func add_item(item_id, amount = 1):
 	if (item_database.is_item_stackable(item_id)):
@@ -23,6 +33,9 @@ func add_item(item_id, amount = 1):
 	else:
 		for i in range(amount):
 			items.append({"id": item_id, "amount": 1});
+	
+	# Recalculate inventory capacity
+	calculate_capacity();
 
 func _add_item_stacks(item_id, amount):
 	var append_item = -1;
@@ -44,10 +57,19 @@ func _add_item_stacks(item_id, amount):
 	else:
 		items.append({"id": item_id, "amount": amount});
 
-func remove_item(slot_id):
+func remove_item(slot_id, count = 1):
 	if (slot_id < 0 || slot_id >= items.size()):
 		return;
-	items.remove(slot_id);
+	if (count > items[slot_id].amount):
+		items[slot_id].amount -= count;
+		
+		if (items[slot_id].amount <= 0):
+			items.remove(slot_id);
+	else:
+		items.remove(slot_id);
+	
+	# Recalculate inventory capacity
+	calculate_capacity();
 
 func use_item(slot_id):
 	if (slot_id < 0 || slot_id >= items.size()):
@@ -57,3 +79,13 @@ func use_item(slot_id):
 
 func is_over_capacity():
 	return cur_capacity > capacity;
+
+func calculate_capacity():
+	capacity = 3.0;
+	capacity += clamp((player.temperature - 34.0) / 3.0 * 3.0, 0.0, 3.0);
+	capacity += clamp(player.hunger * 2.0, 0.0, 2.0);
+	capacity += clamp(player.thirst * 2.0, 0.0, 2.0);
+	
+	cur_capacity = 0.0;
+	for i in items:
+		cur_capacity += item_database.get_item_weight(i.id) * i.amount;

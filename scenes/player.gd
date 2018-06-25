@@ -4,7 +4,8 @@ const MIN_TEMP = 32.8;
 const MAX_TEMP = 36.9;
 
 # Nodes
-onready var scene = get_node("../");
+onready var scene = get_parent();
+onready var inventory = $inventory;
 
 # Variables
 var health = 0.0;
@@ -112,6 +113,14 @@ func update_stats(delta):
 	if (temperature < 20.0):
 		thirst_factor *= 0.6;
 	thirst = clamp(thirst - (timecycle_delta * thirst_factor), 0.0, 1.0);
+	
+	# Disable some ability if player are in weak state
+	if (inventory.is_over_capacity() || temperature < 34.0 || hunger < 0.1 || thirst < 0.1):
+		can_jump = false;
+		can_sprint = false;
+	else:
+		can_jump = true;
+		can_sprint = true;
 
 func update_interface():
 	$interface/stats_label.text = str("Time: ", str(scene.game_time).pad_decimals(2));
@@ -120,6 +129,9 @@ func update_interface():
 	$interface/stats_label.text += str("\nHunger: ", hunger * 100);
 	$interface/stats_label.text += str("\nThirst: ", thirst * 100);
 	$interface/stats_label.text += str("\nnear_firesrc: ", near_firesrc);
+	$interface/stats_label.text += str("\n");
+	$interface/stats_label.text += str("\ninventory.capacity: ", inventory.capacity);
+	$interface/stats_label.text += str("\ninventory.cur_capacity: ", inventory.cur_capacity);
 
 func check_stats():
 	if (temperature < 34.0): # Hypothermia
