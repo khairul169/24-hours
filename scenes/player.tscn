@@ -12,7 +12,7 @@
 [ext_resource path="res://gfps/scenes/bullet_shell.tscn" type="PackedScene" id=10]
 [ext_resource path="res://gfps/scenes/bullet_impact.tscn" type="PackedScene" id=11]
 [ext_resource path="res://gfps/scenes/blood_spray.tscn" type="PackedScene" id=12]
-[ext_resource path="res://gfps/scripts/player/inventory.gd" type="Script" id=13]
+[ext_resource path="res://scripts/player/inventory.gd" type="Script" id=13]
 
 [sub_resource type="CapsuleShape" id=1]
 
@@ -117,12 +117,7 @@ BulletShell = ExtResource( 10 )
 BulletImpact = ExtResource( 11 )
 BloodSpray = ExtResource( 12 )
 
-[node name="inventory" type="Node" parent="." index="5"]
-script = ExtResource( 13 )
-player_weapon = NodePath("../weapon")
-slot_count = 6
-
-[node name="interface" type="Control" parent="." index="6"]
+[node name="interface" type="Control" parent="." index="5"]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -153,4 +148,7 @@ text = "Temperature: 0"
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
+
+[node name="inventory" type="Node" parent="." index="6"]
+script = ExtResource( 13 )
 

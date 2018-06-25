@@ -1,7 +1,7 @@
 extends "res://gfps/scripts/player/controller.gd"
 
 const MIN_TEMP = 32.8;
-const MAX_TEMP = 36.8;
+const MAX_TEMP = 36.9;
 
 # Nodes
 onready var scene = get_node("../");
@@ -11,7 +11,8 @@ var health = 0.0;
 var temperature = 0.0;
 var hunger = 0.0;
 var thirst = 0.0;
-var status = [];
+
+# State
 var next_step = 0.0;
 var last_time = 0.0;
 var next_check = 0.0;
@@ -122,12 +123,12 @@ func update_interface():
 
 func check_stats():
 	if (temperature < 34.0): # Hypothermia
-		health -= rand_range(16.0, 24.0);
+		health -= rand_range(12.0, 18.0);
 	
 	if (hunger <= 0.0): # Hungry
 		health -= rand_range(6.0, 12.0);
 	
 	if (thirst <= 0.0): # Thirsty
-		health -= rand_range(18.0, 24.0);
+		health -= rand_range(8.0, 15.0);
 	
 	health = clamp(health, 0.0, 100.0);

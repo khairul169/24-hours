@@ -14,6 +14,10 @@ config/name="24 Hours"
 run/main_scene="res://scenes/scene.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+item_database="*res://scripts/singleton/item_database.gd"
+
 [display]
 
 window/size/width=848
