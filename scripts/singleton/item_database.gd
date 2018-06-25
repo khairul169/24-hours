@@ -26,7 +26,7 @@ var items = {};
 
 func _ready():
 	register_item(ITEM_STICK, "stick", 0.2, false, 30);
-	register_item(ITEM_BRANCH, "branch", 0.5, false);
+	register_item(ITEM_BRANCH, "branch", 0.5, true);
 	register_item(ITEM_STONE, "stone", 0.5, false, 10);
 
 func register_item(id, name, weight, usable, max_stacks = 1):
