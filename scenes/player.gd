@@ -6,6 +6,7 @@ const MAX_TEMP = 36.9;
 # Nodes
 onready var scene = get_parent();
 onready var inventory = $inventory;
+onready var item_picker = $item_picker;
 
 # Variables
 var health = 0.0;
@@ -54,7 +55,7 @@ func _physics_process(delta):
 func _process(delta):
 	next_step -= delta;
 	if (next_step <= 0.0):
-		next_step = 1.0;
+		next_step = 0.1;
 		update_stats(delta);
 		update_interface();
 	
@@ -98,7 +99,7 @@ func update_stats(delta):
 	if (near_firesrc):
 		temp_factor = 0.4 + clamp(36.4 - temperature, 0.0, 2.0);
 	
-	if (temperature > 36.8):
+	if (temperature > 36.8 || (temperature > 35.6 && health < 40.0)):
 		temp_factor = -0.4;
 	
 	# Update temperature
@@ -132,6 +133,10 @@ func update_interface():
 	$interface/stats_label.text += str("\n");
 	$interface/stats_label.text += str("\ninventory.capacity: ", inventory.capacity);
 	$interface/stats_label.text += str("\ninventory.cur_capacity: ", inventory.cur_capacity);
+	
+	if (item_picker.highlighted_object != null):
+		$interface/stats_label.text += str("\n");
+		$interface/stats_label.text += str("\nitem_picker.highlighted: ", item_database.get_item_name(item_picker.highlighted_object.id));
 
 func check_stats():
 	if (temperature < 34.0): # Hypothermia

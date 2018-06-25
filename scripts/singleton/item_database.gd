@@ -32,6 +32,18 @@ func _ready():
 func register_item(id, name, weight, usable, max_stacks = 1):
 	items[id] = Item.new(id, name, weight, usable, max_stacks);
 
+func is_item_valid(id):
+	return items.has(id);
+
+func get_item_by_name(name):
+	var return_id = ITEM_NONE;
+	for i in items.values():
+		if (name.casecmp_to(i.name) != 0):
+			continue;
+		return_id = i.id;
+		break;
+	return return_id;
+
 func get_item_name(id):
 	if (items.has(id)):
 		return items[id].name;

@@ -17,7 +17,7 @@ func _ready():
 	timecycle_ratio = 1.0 / 60.0;
 	
 	# 1 day in game = 30 minutes real life
-	timecycle_ratio *= 24.0 / 30.0;
+	timecycle_ratio *= 24.0 / 1.0;
 
 func _process(delta):
 	game_time += timecycle_ratio * delta;

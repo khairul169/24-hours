@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scenes/scene.gd" type="Script" id=1]
 [ext_resource path="res://assets/environment.tres" type="Environment" id=2]
 [ext_resource path="res://scenes/player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://assets/textures/Snow_0.png" type="Texture" id=4]
 [ext_resource path="res://scenes/props/campfire.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/props/pickable_item.tscn" type="PackedScene" id=6]
 
 [sub_resource type="PlaneMesh" id=1]
 
@@ -140,4 +141,24 @@ disabled = false
 
 [node name="campfire" parent="." index="4" instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.09385, 0, 0 )
+
+[node name="pickable_item" parent="." index="5" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.02841, 0.284782, 1.18987 )
+_item_name = "stick"
+
+[node name="pickable_item4" parent="." index="6" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.02841, 0.284782, 1.71279 )
+_item_name = "stick"
+
+[node name="pickable_item5" parent="." index="7" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.02841, 0.284782, 2.31281 )
+_item_name = "stick"
+
+[node name="pickable_item2" parent="." index="8" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0964966, 0.284782, 1.18987 )
+_item_name = "branch"
+
+[node name="pickable_item3" parent="." index="9" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.581546, 0.284782, 1.18987 )
+_item_name = "stone"
 

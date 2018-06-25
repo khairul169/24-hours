@@ -28,6 +28,8 @@ func _process(delta):
 		calculate_capacity();
 
 func add_item(item_id, amount = 1):
+	if (!item_database.is_item_valid(item_id)):
+		return;
 	if (item_database.is_item_stackable(item_id)):
 		_add_item_stacks(item_id, amount);
 	else:

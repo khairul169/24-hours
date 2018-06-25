@@ -1,18 +1,20 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://scenes/player.gd" type="Script" id=1]
 [ext_resource path="res://gfps/scripts/player/camera.gd" type="Script" id=2]
-[ext_resource path="res://gfps/scripts/player/sounds.gd" type="Script" id=3]
-[ext_resource path="res://gfps/sounds/footstep_jack_02.wav" type="AudioStream" id=4]
-[ext_resource path="res://gfps/sounds/footstep_jack_03.wav" type="AudioStream" id=5]
-[ext_resource path="res://gfps/sounds/land.wav" type="AudioStream" id=6]
-[ext_resource path="res://gfps/scripts/player/weapon.gd" type="Script" id=7]
-[ext_resource path="res://gfps/scripts/player/firstperson_view.gd" type="Script" id=8]
-[ext_resource path="res://gfps/scenes/muzzle_flash.tscn" type="PackedScene" id=9]
-[ext_resource path="res://gfps/scenes/bullet_shell.tscn" type="PackedScene" id=10]
-[ext_resource path="res://gfps/scenes/bullet_impact.tscn" type="PackedScene" id=11]
-[ext_resource path="res://gfps/scenes/blood_spray.tscn" type="PackedScene" id=12]
-[ext_resource path="res://scripts/player/inventory.gd" type="Script" id=13]
+[ext_resource path="res://gfps/scripts/weapon/misc/dynamic_crosshair.gd" type="Script" id=3]
+[ext_resource path="res://gfps/scripts/player/sounds.gd" type="Script" id=4]
+[ext_resource path="res://gfps/sounds/footstep_jack_02.wav" type="AudioStream" id=5]
+[ext_resource path="res://gfps/sounds/footstep_jack_03.wav" type="AudioStream" id=6]
+[ext_resource path="res://gfps/sounds/land.wav" type="AudioStream" id=7]
+[ext_resource path="res://scripts/player/inventory.gd" type="Script" id=8]
+[ext_resource path="res://gfps/scripts/player/weapon.gd" type="Script" id=9]
+[ext_resource path="res://gfps/scripts/player/firstperson_view.gd" type="Script" id=10]
+[ext_resource path="res://gfps/scenes/muzzle_flash.tscn" type="PackedScene" id=11]
+[ext_resource path="res://gfps/scenes/bullet_shell.tscn" type="PackedScene" id=12]
+[ext_resource path="res://gfps/scenes/bullet_impact.tscn" type="PackedScene" id=13]
+[ext_resource path="res://gfps/scenes/blood_spray.tscn" type="PackedScene" id=14]
+[ext_resource path="res://scripts/player/item_picker.gd" type="Script" id=15]
 
 [sub_resource type="CapsuleShape" id=1]
 
@@ -99,25 +101,7 @@ bob_factor = 0.01
 min_weight = 0.5
 interpolation = 4.0
 
-[node name="sounds" type="Node" parent="." index="3"]
-script = ExtResource( 3 )
-StepLeft = ExtResource( 4 )
-StepRight = ExtResource( 5 )
-StepDelay = 0.5
-JumpLanding = ExtResource( 6 )
-
-[node name="weapon" type="Node" parent="." index="4"]
-script = ExtResource( 7 )
-FirstPersonView = ExtResource( 8 )
-ModelScaling = 0.05
-EnableScopeRender = true
-ScopeRenderSize = 512.0
-MuzzleFlash = ExtResource( 9 )
-BulletShell = ExtResource( 10 )
-BulletImpact = ExtResource( 11 )
-BloodSpray = ExtResource( 12 )
-
-[node name="interface" type="Control" parent="." index="5"]
+[node name="interface" type="Control" parent="." index="3"]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -129,7 +113,34 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 
-[node name="stats_label" type="Label" parent="interface" index="0"]
+[node name="crosshair" type="Control" parent="interface" index="0"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -20.0
+margin_right = 20.0
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+script = ExtResource( 3 )
+size = 12
+width = 2.0
+color = Color( 0.843137, 0.101961, 0.101961, 0.8 )
+rotation = 0.0
+dot = true
+line = false
+line_count = 4
+circle = true
+anti_aliasing = false
+PlayerWeapon = NodePath("../../weapon")
+
+[node name="stats_label" type="Label" parent="interface" index="1"]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -149,6 +160,27 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="inventory" type="Node" parent="." index="6"]
-script = ExtResource( 13 )
+[node name="sounds" type="Node" parent="." index="4"]
+script = ExtResource( 4 )
+StepLeft = ExtResource( 5 )
+StepRight = ExtResource( 6 )
+StepDelay = 0.5
+JumpLanding = ExtResource( 7 )
+
+[node name="inventory" type="Node" parent="." index="5"]
+script = ExtResource( 8 )
+
+[node name="weapon" type="Node" parent="." index="6"]
+script = ExtResource( 9 )
+FirstPersonView = ExtResource( 10 )
+ModelScaling = 0.05
+EnableScopeRender = true
+ScopeRenderSize = 512.0
+MuzzleFlash = ExtResource( 11 )
+BulletShell = ExtResource( 12 )
+BulletImpact = ExtResource( 13 )
+BloodSpray = ExtResource( 14 )
+
+[node name="item_picker" type="Node" parent="." index="7"]
+script = ExtResource( 15 )
 
