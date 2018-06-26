@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scenes/player/interface/inventory_ui.gd" type="Script" id=1]
 [ext_resource path="res://scenes/player/interface/inv_item_list.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/fonts/OpenSans-Light.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://assets/fonts/OpenSans-Regular.ttf" type="DynamicFontData" id=4]
 
 [sub_resource type="DynamicFont" id=1]
 
@@ -12,6 +13,16 @@ outline_color = Color( 1, 1, 1, 1 )
 use_mipmaps = false
 use_filter = true
 font_data = ExtResource( 3 )
+_sections_unfolded = [ "Settings" ]
+
+[sub_resource type="DynamicFont" id=2]
+
+size = 16
+outline_size = 0
+outline_color = Color( 1, 1, 1, 1 )
+use_mipmaps = false
+use_filter = true
+font_data = ExtResource( 4 )
 _sections_unfolded = [ "Settings" ]
 
 [node name="inventory" type="Control" index="0"]
@@ -164,7 +175,6 @@ color = Color( 1, 1, 1, 0.486275 )
 _sections_unfolded = [ "Rect" ]
 
 [node name="bag" type="Control" parent="." index="3"]
-editor/display_folded = true
 anchor_left = 1.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -194,13 +204,38 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
 custom_fonts/font = SubResource( 1 )
-text = "INVENTORY"
+text = "BAG"
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "custom_fonts/font" ]
 
-[node name="base" type="Control" parent="bag" index="1"]
+[node name="capacity" type="Label" parent="bag" index="1"]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 124.0
+margin_top = 24.0
+margin_right = 232.0
+margin_bottom = 52.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "1.0/2.0 kg"
+align = 2
+valign = 2
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Custom Colors", "custom_fonts/font" ]
+
+[node name="base" type="Control" parent="bag" index="2"]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
