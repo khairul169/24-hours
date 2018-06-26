@@ -67,7 +67,6 @@ func _add_item_stacks(item_id, amount):
 	else:
 		items.append({"id": item_id, "amount": amount});
 
-"""
 func remove_item(slot_id, count = 1):
 	if (slot_id < 0 || slot_id >= items.size()):
 		return;
@@ -81,7 +80,6 @@ func remove_item(slot_id, count = 1):
 	
 	# Update inventory
 	update_item();
-"""
 
 func get_item_amount(slot_id):
 	if (slot_id < 0 || slot_id >= items.size()):
@@ -103,24 +101,15 @@ func _queue_drop():
 	for i in range(drop_queue.size()):
 		var slot_id = drop_queue[i][0];
 		var drop_amount = drop_queue[i][1];
-		var item_scene = item_database.get_item_scene(items[slot_id].id);
 		
 		for i in range(drop_amount):
-			items[slot_id].amount -= 1;
+			var pos = player.global_transform.origin + (Vector3(rand_range(-1, 1), 0, rand_range(-1, 1)) * 1.0);
+			var ray_result = space_state.intersect_ray(pos + Vector3(0, 5.0, 0), pos - Vector3(0, 5.0, 0), [player]);
+			if (ray_result != null && !ray_result.empty()):
+				pos.y = ray_result.position.y;
 			
-			if (items[slot_id].amount <= 0):
-				items.remove(slot_id);
-			
-			if (item_scene):
-				var instance = item_scene.instance();
-				var pos = player.global_transform.origin + (Vector3(rand_range(-1, 1), 0, rand_range(-1, 1)) * 1.0);
-				var ray_result = space_state.intersect_ray(pos + Vector3(0, 10.0, 0), pos - Vector3(0, 10.0, 0), [player]);
-				if (ray_result != null && !ray_result.empty()):
-					pos.y = ray_result.position.y;
-				
-				player.scene.add_child(instance);
-				instance.global_transform.origin = pos;
-				instance.rotation_degrees.y = randf() * 360.0;
+			spawn_item(items[slot_id].id, pos);
+			remove_item(slot_id, 1);
 		
 		# Remove queue
 		drop_queue.remove(i);
@@ -153,3 +142,19 @@ func update_item():
 		cur_capacity += item_database.get_item_weight(i.id) * i.amount;
 	
 	inventory_ui.refresh_items();
+
+func spawn_item(id, pos):
+	if (!item_database.is_item_valid(id)):
+		return;
+	
+	var item_scene = item_database.get_item_scene(id);
+	if (!item_scene):
+		return;
+	
+	# Instance scene
+	var instance = item_scene.instance();
+	player.scene.add_child(instance);
+	
+	# Set object transform
+	instance.global_transform.origin = pos;
+	instance.rotation_degrees.y = randf() * 360.0;

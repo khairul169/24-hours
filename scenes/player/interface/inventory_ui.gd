@@ -49,15 +49,20 @@ func update_interface(container, item_list):
 
 func refresh_items():
 	if (item_picker):
-		var _near = item_picker.nearest_item;
+		var _near = item_picker.check_near_item();
 		near_items.clear();
 		
-		for i in range(item_picker.nearest_item.size()):
-			var item = item_picker.nearest_item[i];
-			var item_name = item_database.get_item_name(item.item_id);
+		for id in item_picker.nearest_item:
+			var amount = item_picker.nearest_item[id].size();
+			var item_name = item_database.get_item_name(id);
 			
-			near_items.append({
-				'id': i,
+			if (item_database.is_item_stackable(id) && amount > 1):
+				item_name += str(" (", amount, "x)");
+				amount = 1;
+			
+			for i in range(amount):
+				near_items.append({
+				'id': id,
 				'title': item_name,
 				'pickable': true,
 				'usable': false
@@ -84,7 +89,10 @@ func refresh_items():
 
 func on_item_pick(id):
 	if (item_picker):
-		item_picker.pick_near_item(id);
+		var amount = 1;
+		if (Input.is_key_pressed(KEY_CONTROL)):
+			amount = item_picker.get_near_item_amount(id);
+		item_picker.pick_near_item(id, amount);
 		refresh_items();
 
 func on_item_used(id):

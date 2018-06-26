@@ -13,15 +13,8 @@ onready var inventory = get_node("../inventory");
 
 # Variables
 var highlighted_object = null;
-var nearest_item = [];
+var nearest_item = {};
 var next_check = 0.0;
-
-func _process(delta):
-	if (next_check > 0.0):
-		next_check -= delta;
-	else:
-		next_check = 0.1;
-		check_near_item();
 
 func _physics_process(delta):
 	if (!camera.current || !space_state):
@@ -61,23 +54,44 @@ func pick_item(object):
 	object.remove_from_world();
 
 func check_near_item():
+	if (!player):
+		return;
 	var player_pos = player.global_transform.origin;
 	nearest_item.clear();
 	
 	for object in get_tree().get_nodes_in_group("pickable_items"):
 		if (player_pos.distance_to(object.global_transform.origin) > NEAR_ITEM_RANGE):
 			continue;
-		if (object in nearest_item || !object is PICKABLE_ITEM_SCRIPT || !object.is_valid):
+		if (!object is PICKABLE_ITEM_SCRIPT || !object.is_valid):
 			continue;
-		nearest_item.append(object);
+		if (nearest_item.has(object.item_id)):
+			nearest_item[object.item_id].append(object);
+		else:
+			nearest_item[object.item_id] = [object];
+	return nearest_item;
 
-func pick_near_item(id):
-	if (id < 0 || id >= nearest_item.size()):
+func pick_near_item(id, amount = 1):
+	if (!nearest_item.has(id)):
 		return;
 	
-	var distance = player.global_transform.origin.distance_to(nearest_item[id].global_transform.origin);
-	if (distance > NEAR_ITEM_RANGE):
-		return;
+	if (amount > 1 && !item_database.is_item_stackable(id)):
+		amount = 1;
 	
-	pick_item(nearest_item[id]);
+	# Loop through pick amount
+	for i in range(min(amount, nearest_item[id].size())):
+		var item = nearest_item[id][0];
+		
+		var distance = player.global_transform.origin.distance_to(item.global_transform.origin);
+		if (distance > NEAR_ITEM_RANGE):
+			continue;
+		
+		pick_item(item);
+		nearest_item[id].remove(0);
+	
+	# Refresh near item list
 	check_near_item();
+
+func get_near_item_amount(id):
+	if (nearest_item.has(id) && !nearest_item[id].empty()):
+		return nearest_item[id].size();
+	return 0;
