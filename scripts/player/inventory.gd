@@ -69,7 +69,8 @@ func _add_item_stacks(item_id, amount):
 
 func remove_item(slot_id, count = 1):
 	if (slot_id < 0 || slot_id >= items.size()):
-		return;
+		return false;
+	
 	if (items[slot_id].amount > 1):
 		items[slot_id].amount -= count;
 		
@@ -80,6 +81,12 @@ func remove_item(slot_id, count = 1):
 	
 	# Update inventory
 	update_item();
+	return true;
+
+func get_item_id(slot_id):
+	if (slot_id < 0 || slot_id >= items.size()):
+		return 0;
+	return items[slot_id].id;
 
 func get_item_amount(slot_id):
 	if (slot_id < 0 || slot_id >= items.size()):

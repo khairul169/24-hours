@@ -30,6 +30,9 @@ class Item extends Reference:
 		scene = load(path);
 
 var items = {};
+var usable_fuels = {
+	ITEM_STICK: 30.0
+};
 
 func _ready():
 	# Item list

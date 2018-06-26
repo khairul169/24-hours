@@ -15,9 +15,18 @@ onready var bag_capacity_label = $bag/capacity;
 var near_items = [];
 var bag_items = [];
 var next_update = 0.0;
+var itemdrop_controls = [];
+var item_dragged = -1;
 
 func _ready():
-	pass
+	reset();
+	register_itemdrop_control($near/base, self, "on_item_dropped_to_near");
+
+func _input(event):
+	if (event is InputEventMouseButton):
+		if (item_dragged >= 0 && !event.pressed && event.button_index == BUTTON_LEFT):
+			item_drag_drop(event.global_position);
+			item_dragged = -1;
 
 func reset():
 	# Reset item
@@ -47,6 +56,7 @@ func update_interface(container, item_list):
 		instance.connect("pick_item", self, "on_item_pick");
 		instance.connect("item_used", self, "on_item_used");
 		instance.connect("item_drop", self, "on_item_drop");
+		instance.connect("item_pressed", self, "item_pressed");
 
 func refresh_items():
 	if (!item_picker || !inventory):
@@ -116,3 +126,26 @@ func on_item_drop(id, all):
 			inventory.drop_item(id, inventory.get_item_amount(id));
 		else:
 			inventory.drop_item(id, 1);
+
+func register_itemdrop_control(node, target, method):
+	itemdrop_controls.append({
+		'node': node,
+		'target': target,
+		'method': method
+	});
+
+func item_drag_drop(pos):
+	if (item_dragged < 0 || item_dragged >= inventory.items.size()):
+		return;
+	
+	for i in itemdrop_controls:
+		if (!i.node.visible || !i.node.get_global_rect().has_point(pos)):
+			continue;
+		if (i.target && i.target.has_method(i.method)):
+			i.target.call(i.method, item_dragged);
+
+func item_pressed(id):
+	item_dragged = id;
+
+func on_item_dropped_to_near(id):
+	on_item_drop(id, true);

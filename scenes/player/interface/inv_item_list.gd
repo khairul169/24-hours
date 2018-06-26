@@ -4,6 +4,7 @@ extends Control
 signal pick_item(id);
 signal item_used(id);
 signal item_drop(id, all);
+signal item_pressed(id);
 
 # Variables
 var id = -1;
@@ -46,22 +47,14 @@ func _input(event):
 		var in_rect = $item_data/hover_area.get_global_rect().has_point(event.global_position);
 		
 		if (event.button_index == BUTTON_LEFT):
-			"""
-			if (event.pressed):
-				if (last_press < 0.4 && in_rect):
-					_pick();
-				last_press = 0.0;
-			"""
+			if (event.pressed && in_rect && !pickable):
+				emit_signal("item_pressed", id);
 			
 			if (!event.pressed && in_rect):
 				if (pickable):
-					_pick();
+					emit_signal("pick_item", id);
 				else:
 					toggle_action(!is_action_visible());
-
-func _pick():
-	if (pickable):
-		emit_signal("pick_item", id);
 
 func _use():
 	emit_signal("item_used", id);

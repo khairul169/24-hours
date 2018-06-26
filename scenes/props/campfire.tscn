@@ -1,8 +1,12 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://scenes/props/campfire.gd" type="Script" id=1]
 [ext_resource path="res://assets/props/campfire/campfire.tscn" type="PackedScene" id=2]
 [ext_resource path="res://gfps/sprites/smoke_particle.png" type="Texture" id=3]
+
+[sub_resource type="BoxShape" id=9]
+
+extents = Vector3( 0.337552, 0.199056, 0.398721 )
 
 [sub_resource type="Animation" id=1]
 
@@ -259,12 +263,24 @@ anim_offset_random = 0.0
 anim_loop = false
 _sections_unfolded = [ "Gravity", "scale_curve" ]
 
-[node name="campfire" type="Spatial" index="0"]
+[node name="campfire" type="StaticBody" index="0"]
+input_ray_pickable = true
+input_capture_on_drag = false
+collision_layer = 1
+collision_mask = 1
+friction = 1.0
+bounce = 0.0
+constant_linear_velocity = Vector3( 0, 0, 0 )
+constant_angular_velocity = Vector3( 0, 0, 0 )
 script = ExtResource( 1 )
 _sections_unfolded = [ "Transform" ]
 campfire_range = 6.0
 
-[node name="light" type="OmniLight" parent="." index="0"]
+[node name="shape" type="CollisionShape" parent="." index="0"]
+shape = SubResource( 9 )
+disabled = false
+
+[node name="light" type="OmniLight" parent="." index="1"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.48425e-05, 1.15096, 0.000253901 )
 layers = 1
 light_color = Color( 1, 0.545098, 0.180392, 1 )
@@ -286,7 +302,7 @@ omni_shadow_mode = 1
 omni_shadow_detail = 1
 _sections_unfolded = [ "Light", "Transform" ]
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="2"]
 root_node = NodePath("..")
 autoplay = "idle"
 playback_process_mode = 1
@@ -295,9 +311,9 @@ playback_speed = 1.0
 anims/idle = SubResource( 1 )
 blend_times = [  ]
 
-[node name="scene" parent="." index="2" instance=ExtResource( 2 )]
+[node name="scene" parent="." index="3" instance=ExtResource( 2 )]
 
-[node name="particle1" type="Particles" parent="." index="3"]
+[node name="particle1" type="Particles" parent="." index="4"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.115279, 0 )
 layers = 1
 material_override = SubResource( 2 )
@@ -326,7 +342,7 @@ draw_passes = 1
 draw_pass_1 = SubResource( 6 )
 _sections_unfolded = [ "Geometry", "Process Material", "Time", "material_override", "process_material" ]
 
-[node name="particle2" type="Particles" parent="." index="4"]
+[node name="particle2" type="Particles" parent="." index="5"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.0238943, 0 )
 layers = 1
 material_override = SubResource( 7 )

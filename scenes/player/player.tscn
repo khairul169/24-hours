@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://scenes/player/player.gd" type="Script" id=1]
 [ext_resource path="res://scenes/player/interface.tscn" type="PackedScene" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://gfps/scripts/player/weapon.gd" type="Script" id=9]
 [ext_resource path="res://scripts/player/fpview.gd" type="Script" id=10]
 [ext_resource path="res://scripts/player/item_picker.gd" type="Script" id=11]
+[ext_resource path="res://scripts/player/prop_usage.gd" type="Script" id=12]
 
 [sub_resource type="CapsuleShape" id=1]
 
@@ -122,4 +123,7 @@ BloodSpray = null
 
 [node name="item_picker" type="Node" parent="." index="7"]
 script = ExtResource( 11 )
+
+[node name="prop_usage" type="Node" parent="." index="8"]
+script = ExtResource( 12 )
 
