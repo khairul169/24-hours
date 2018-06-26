@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scenes/scene.gd" type="Script" id=1]
 [ext_resource path="res://assets/environment.tres" type="Environment" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://assets/terrain/background/background01.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/props/campfire.tscn" type="PackedScene" id=7]
 [ext_resource path="res://assets/props/tree/tree01.tscn" type="PackedScene" id=8]
+[ext_resource path="res://assets/props/stick/stick.tscn" type="PackedScene" id=9]
 
 [node name="scene" type="Spatial" index="0"]
 script = ExtResource( 1 )
@@ -27,13 +28,13 @@ light_negative = false
 light_specular = 0.5
 light_bake_mode = 1
 light_cull_mask = -1
-shadow_enabled = true
+shadow_enabled = false
 shadow_color = Color( 0, 0, 0, 1 )
 shadow_bias = 0.1
 shadow_contact = 0.0
 shadow_reverse_cull_face = false
 editor_only = false
-directional_shadow_mode = 0
+directional_shadow_mode = 2
 directional_shadow_split_1 = 0.1
 directional_shadow_split_2 = 0.2
 directional_shadow_split_3 = 0.5
@@ -42,7 +43,6 @@ directional_shadow_normal_bias = 0.8
 directional_shadow_bias_split_scale = 0.25
 directional_shadow_depth_range = 0
 directional_shadow_max_distance = 50.0
-_sections_unfolded = [ "Directional Shadow", "Light" ]
 
 [node name="player" parent="." index="2" instance=ExtResource( 3 )]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0 )
@@ -100,5 +100,17 @@ transform = Transform( 0.376051, 0, -0.778362, 0.0387566, 0.863371, 0.0187245, 0
 transform = Transform( 0.85706, 0, 0.415237, 0.0115622, 0.951983, -0.0238647, -0.415076, 0.0265181, 0.856728, -1.48467, -1.35268, 4.88143 )
 
 [node name="tree9" parent="trees" index="8" instance=ExtResource( 8 )]
-transform = Transform( 0.463972, -0.0400242, 0.532962, 0.00106836, 0.705838, 0.0520767, -0.534461, -0.0333345, 0.462774, 3.63592, -0.0188071, 4.88143 )
+transform = Transform( 0.463972, -0.0400242, 0.532962, 0.00106836, 0.705838, 0.0520767, -0.534461, -0.0333345, 0.462774, 3.63592, -0.105057, 4.88143 )
+
+[node name="props" type="Spatial" parent="." index="8"]
+editor/display_folded = true
+
+[node name="stick" parent="props" index="0" instance=ExtResource( 9 )]
+transform = Transform( -0.0113781, -0.211427, 0.977327, -0.000114166, 0.977391, 0.21144, -0.999935, 0.00229421, -0.011145, -0.216475, -1.11209, 3.07258 )
+
+[node name="stick2" parent="props" index="1" instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 0.995086, 0.0990122, 0, -0.0990122, 0.995086, 2.24579, -0.416086, 3.07258 )
+
+[node name="stick3" parent="props" index="2" instance=ExtResource( 9 )]
+transform = Transform( -0.153034, -0.262533, -0.95271, -0.0512367, 0.964877, -0.257656, 0.986892, 0.00938376, -0.16111, 2.24579, -0.487376, 0.284169 )
 

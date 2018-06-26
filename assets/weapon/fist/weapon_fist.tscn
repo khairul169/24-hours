@@ -4,3 +4,7 @@
 
 [node name="weapon_fist" index="0" instance=ExtResource( 1 )]
 
+[node name="hand" parent="Armature/Skeleton" index="0"]
+cast_shadow = 0
+_sections_unfolded = [ "Geometry" ]
+

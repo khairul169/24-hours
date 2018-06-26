@@ -1,8 +1,8 @@
 [gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scenes/player/player.gd" type="Script" id=1]
-[ext_resource path="res://gfps/scripts/player/camera.gd" type="Script" id=2]
-[ext_resource path="res://scenes/player/interface.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/player/interface.tscn" type="PackedScene" id=2]
+[ext_resource path="res://gfps/scripts/player/camera.gd" type="Script" id=3]
 [ext_resource path="res://gfps/scripts/player/sounds.gd" type="Script" id=4]
 [ext_resource path="res://gfps/sounds/footstep_jack_02.wav" type="AudioStream" id=5]
 [ext_resource path="res://gfps/sounds/footstep_jack_03.wav" type="AudioStream" id=6]
@@ -62,19 +62,21 @@ CameraNode = NodePath("camera")
 CameraSensitivity = 0.2
 CameraPitchLimit = 80
 
-[node name="shape_body" type="CollisionShape" parent="." index="0"]
+[node name="interface" parent="." index="0" instance=ExtResource( 2 )]
+
+[node name="shape_body" type="CollisionShape" parent="." index="1"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1, 0 )
 shape = SubResource( 1 )
 disabled = false
 _sections_unfolded = [ "Transform" ]
 
-[node name="shape_leg" type="CollisionShape" parent="." index="1"]
+[node name="shape_leg" type="CollisionShape" parent="." index="2"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.3, 0 )
 shape = SubResource( 2 )
 disabled = false
 _sections_unfolded = [ "Transform" ]
 
-[node name="camera" type="Camera" parent="." index="2"]
+[node name="camera" type="Camera" parent="." index="3"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0 )
 keep_aspect = 1
 cull_mask = 1048575
@@ -88,7 +90,7 @@ fov = 60.0
 size = 1.0
 near = 0.01
 far = 500.0
-script = ExtResource( 2 )
+script = ExtResource( 3 )
 _sections_unfolded = [ "Transform" ]
 enabled = true
 Controller = NodePath("..")
@@ -96,8 +98,6 @@ bob_speed = 0.8
 bob_factor = 0.015
 min_weight = 1.2
 interpolation = 4.0
-
-[node name="interface" parent="." index="3" instance=ExtResource( 3 )]
 
 [node name="sounds" type="Node" parent="." index="4"]
 script = ExtResource( 4 )

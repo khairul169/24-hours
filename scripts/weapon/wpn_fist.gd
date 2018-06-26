@@ -8,7 +8,7 @@ func _init():
 	view_scene = "res://assets/weapon/fist/weapon_fist.tscn";
 	
 	# Weapon stats
-	clip = 1;
+	clip = 0;
 	ammo = 0;
 	move_speed = 1.0;
 	damage = 16.0;
