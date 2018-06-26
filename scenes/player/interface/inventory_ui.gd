@@ -93,12 +93,10 @@ func refresh_items():
 	bag_capacity_label.text = str(inventory.cur_capacity).pad_decimals(1) + "/" + str(inventory.capacity).pad_decimals(1) + " kg";
 	
 	# Label color
-	""" IDK how to change label font color >:O
 	if (inventory.is_over_capacity()):
-		bag_capacity_label.font_color = Color("#333");
+		bag_capacity_label.add_color_override("font_color", Color("#ff3a3a"));
 	else:
-		bag_capacity_label.font_color = Color("#333");
-	"""
+		bag_capacity_label.add_color_override("font_color", Color(1,1,1));
 
 func on_item_pick(id):
 	if (item_picker && item_picker.has_method("pick_near_item")):

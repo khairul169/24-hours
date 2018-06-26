@@ -175,6 +175,7 @@ color = Color( 1, 1, 1, 0.486275 )
 _sections_unfolded = [ "Rect" ]
 
 [node name="bag" type="Control" parent="." index="3"]
+editor/display_folded = true
 anchor_left = 1.0
 anchor_top = 0.0
 anchor_right = 1.0
