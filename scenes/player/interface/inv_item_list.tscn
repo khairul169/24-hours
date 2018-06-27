@@ -260,26 +260,7 @@ flat = true
 align = 1
 _sections_unfolded = [ "Mouse", "Rect" ]
 
-[node name="separator" type="ColorRect" parent="." index="2"]
-visible = false
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 80.0
-margin_right = 212.0
-margin_bottom = 82.0
-rect_min_size = Vector2( 212, 2 )
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-color = Color( 1, 1, 1, 0.247059 )
-_sections_unfolded = [ "Rect" ]
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="3"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="2"]
 root_node = NodePath("..")
 autoplay = "default"
 playback_process_mode = 1

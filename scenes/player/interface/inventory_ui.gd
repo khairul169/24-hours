@@ -6,6 +6,7 @@ export (Texture) var dragdrop_placeholder;
 const DRAG_PREVIEW_SIZE = 48.0;
 
 # Nodes
+onready var player = get_node("../../");
 onready var inventory = get_node("../../inventory");
 onready var item_picker = get_node("../../item_picker");
 
@@ -13,6 +14,9 @@ onready var item_picker = get_node("../../item_picker");
 onready var near_item_container = $near/base/scroll_container/container;
 onready var bag_item_container = $bag/base/scroll_container/container;
 onready var bag_capacity_label = $bag/capacity;
+onready var label_health = $state/label_health;
+onready var label_hunger = $state/label_hunger;
+onready var label_thirst = $state/label_thirst;
 
 # Drag n drop icon preview
 var drag_preview;
@@ -63,6 +67,14 @@ func reset():
 	near_items.clear();
 	bag_items.clear();
 	refresh_items();
+
+func _process(delta):
+	if (!visible):
+		return;
+	if (player):
+		label_health.text = str(int(player.health)).pad_zeros(1) + "%";
+		label_hunger.text = str(int(player.hunger * 100.0)).pad_zeros(1) + "%";
+		label_thirst.text = str(int(player.thirst * 100.0)).pad_zeros(1) + "%";
 
 func update_interface(container, item_list):
 	for i in container.get_children():

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.1 r15371"
+   sodipodi:docname="item_icon.svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.5898305"
+     inkscape:cx="41.191195"
+     inkscape:cy="1083.3475"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1366"
+     inkscape:window-height="705"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.37795275;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+       d="M 62.751953 11.214844 C 55.728042 11.080751 48.117163 14.25217 42.308594 20.427734 C 34.076436 29.180004 24.98887 48.726516 27.433594 59.519531 L 21.519531 65.804688 A 7.9877998 7.9877998 0 0 0 21.087891 65.357422 A 7.9877998 7.9877998 0 0 0 9.796875 65.705078 A 7.9877998 7.9877998 0 0 0 10.142578 76.996094 A 7.9877998 7.9877998 0 0 0 17.283203 78.986328 A 7.9877998 7.9877998 0 0 0 19.701172 85.986328 A 7.9877998 7.9877998 0 0 0 30.992188 85.640625 A 7.9877998 7.9877998 0 0 0 30.646484 74.347656 A 7.9877998 7.9877998 0 0 0 30.171875 73.945312 L 36.623047 67.083984 C 47.69357 67.91649 65.51269 58.108367 73.425781 49.695312 C 83.208635 39.294363 84.172532 24.310344 75.580078 16.228516 C 72.089395 12.945272 67.557787 11.306591 62.751953 11.214844 z M 60.160156 16.853516 C 60.568451 16.844339 60.98487 16.848816 61.410156 16.867188 A 1.6348091 1.6348091 0 1 1 61.269531 20.130859 C 55.504259 19.881818 52.350222 22.256446 49.820312 26.265625 A 1.6348091 1.6348091 0 1 1 47.058594 24.523438 C 49.807335 20.167476 54.035732 16.991169 60.160156 16.853516 z "
+       transform="scale(0.26458333)"
+       id="path4489"
+       inkscape:export-filename="D:\git\24-hours\assets\sprites\ui\icon_hunger.png"
+       inkscape:export-xdpi="23.705297"
+       inkscape:export-ydpi="23.705297" />
+    <path
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.37795269;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+       d="M 137.86328 18.943359 C 137.86328 18.943359 115.73633 51.581636 115.73633 63.802734 C 115.73633 76.023837 125.64218 85.931641 137.86328 85.931641 C 150.08438 85.931641 159.99219 76.023837 159.99219 63.802734 C 159.99219 51.581636 137.86328 18.943359 137.86328 18.943359 z M 124.43555 66.238281 A 1.4458138 1.4458138 0 0 1 125.91211 67.544922 C 126.25272 70.589785 127.3333 72.508347 128.92383 73.929688 C 130.51435 75.351028 132.70702 76.270274 135.29492 76.904297 A 1.4458138 1.4458138 0 1 1 134.60938 79.708984 C 131.76846 79.012969 129.10298 77.966967 126.99805 76.085938 C 124.89312 74.204912 123.44537 71.4839 123.04102 67.869141 A 1.4458138 1.4458138 0 0 1 124.43555 66.238281 z "
+       transform="scale(0.26458333)"
+       id="path4501"
+       inkscape:export-filename="D:\git\24-hours\assets\sprites\ui\icon_thirst.png"
+       inkscape:export-xdpi="28.199646"
+       inkscape:export-ydpi="28.199646" />
+  </g>
+</svg>
