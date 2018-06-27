@@ -52,6 +52,11 @@ func pick_item(object):
 	
 	# Remove item from world
 	object.remove_from_world();
+	
+	# Play animation
+	var cur_weapon = player.weapon.get_current_weapon();
+	if (!inventory.using_item && cur_weapon.id == player.wpn_fist):
+		cur_weapon.pick_animation();
 
 func check_near_item():
 	if (!player):

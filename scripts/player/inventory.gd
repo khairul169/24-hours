@@ -11,6 +11,7 @@ var capacity = 0.0;
 var items = [];
 var cur_capacity = 0.0;
 var drop_queue = [];
+var using_item = null;
 
 # State
 var next_think = 0.0;
@@ -110,11 +111,20 @@ func _queue_drop():
 		var drop_amount = drop_queue[i][1];
 		
 		for i in range(drop_amount):
-			var pos = player.global_transform.origin + (Vector3(rand_range(-1, 1), 0, rand_range(-1, 1)) * 1.0);
-			var ray_result = space_state.intersect_ray(pos + Vector3(0, 5.0, 0), pos - Vector3(0, 5.0, 0), [player]);
+			var pos = player.global_transform.origin + (Vector3(rand_range(-1, 1), 0, rand_range(-1, 1)) * 0.5);
+			
+			# Prevent items from intersecting each other
+			var exclusion = [player];
+			for i in get_tree().get_nodes_in_group("pickable_items"):
+				if (pos.distance_to(i.global_transform.origin) < 5.0):
+					exclusion.append(i);
+			
+			# Cast a ray
+			var ray_result = space_state.intersect_ray(pos + Vector3(0, 3.0, 0), pos - Vector3(0, 3.0, 0), exclusion);
 			if (ray_result != null && !ray_result.empty()):
 				pos.y = ray_result.position.y;
 			
+			# Instance item
 			spawn_item(items[slot_id].id, pos);
 			remove_item(slot_id, 1);
 		

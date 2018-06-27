@@ -45,3 +45,6 @@ func get_estimation():
 		if (item_database.usable_fuels.has(i)):
 			est += item_database.usable_fuels[i];
 	return est;
+
+func is_emitting():
+	return next_burn > 0.0;

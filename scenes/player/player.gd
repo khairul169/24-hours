@@ -7,6 +7,7 @@ const MAX_TEMP = 36.9;
 onready var scene = get_parent();
 onready var inventory = $inventory;
 onready var item_picker = $item_picker;
+onready var weapon = $weapon;
 
 # Variables
 var health = 0.0;
@@ -41,17 +42,17 @@ func _ready():
 	near_firesrc = false;
 	
 	# Register weapon
-	wpn_fist = $weapon.register_weapon("res://scripts/weapon/wpn_fist.gd");
+	wpn_fist = weapon.register_weapon("res://scripts/weapon/wpn_fist.gd");
 	
-	$weapon.set_current_weapon(wpn_fist);
+	weapon.set_current_weapon(wpn_fist);
 
 func _input(event):
 	if (event is InputEventMouseButton):
-		if ($weapon && event.button_index == BUTTON_LEFT):
-			$weapon.input.attack = event.pressed;
+		if (weapon && event.button_index == BUTTON_LEFT):
+			weapon.input.attack = event.pressed;
 		
-		if ($weapon && event.button_index == BUTTON_RIGHT):
-			$weapon.input.special = event.pressed;
+		if (weapon && event.button_index == BUTTON_RIGHT):
+			weapon.input.special = event.pressed;
 
 func _physics_process(delta):
 	# Update player input
@@ -98,15 +99,18 @@ func update_stats(delta):
 	if (hunger > 0.4):
 		temp_factor += (hunger - 0.4) / 0.6 * 2.2;
 	
-	# Check if player near a heat source
+	# Check if player near a fire source
 	near_firesrc = false;
 	for i in get_tree().get_nodes_in_group("campfire"):
-		if (global_transform.origin.distance_to(i.global_transform.origin) <= i.campfire_range):
-			near_firesrc = true;
-			break;
+		if (global_transform.origin.distance_to(i.global_transform.origin) > i.campfire_range):
+			continue;
+		if (!i.has_method("is_emitting") || !i.is_emitting()):
+			continue;
+		near_firesrc = true;
+		break;
 	
 	if (near_firesrc):
-		temp_factor = 0.4 + clamp(36.4 - temperature, 0.0, 2.0);
+		temp_factor = 0.4 + clamp(36.4 - temperature * 1.8, 0.0, 2.0);
 	
 	if (temperature > 36.8 || (temperature > 35.6 && health < 40.0)):
 		temp_factor = -0.4;

@@ -4,7 +4,7 @@
 [ext_resource path="res://assets/environment.tres" type="Environment" id=2]
 [ext_resource path="res://scenes/player/player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://assets/terrain/terrain01.tscn" type="PackedScene" id=4]
-[ext_resource path="res://assets/props/water.tscn" type="PackedScene" id=5]
+[ext_resource path="res://assets/props/water/water.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/terrain/background/background01.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/props/campfire.tscn" type="PackedScene" id=7]
 [ext_resource path="res://assets/props/tree/tree01.tscn" type="PackedScene" id=8]
@@ -50,6 +50,7 @@ transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0
 [node name="terrain" parent="." index="3" instance=ExtResource( 4 )]
 
 [node name="water" parent="." index="4" instance=ExtResource( 5 )]
+transform = Transform( 2, 0, 0, 0, 1, 0, 0, 0, 2, 0, -3.30926, 0 )
 
 [node name="backgrounds" type="Spatial" parent="." index="5"]
 editor/display_folded = true

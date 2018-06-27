@@ -1,6 +1,9 @@
 extends Control
 
 export (PackedScene) var item_list_scene;
+export (Texture) var dragdrop_placeholder;
+
+const DRAG_PREVIEW_SIZE = 48.0;
 
 # Nodes
 onready var inventory = get_node("../../inventory");
@@ -10,6 +13,9 @@ onready var item_picker = get_node("../../item_picker");
 onready var near_item_container = $near/base/scroll_container/container;
 onready var bag_item_container = $bag/base/scroll_container/container;
 onready var bag_capacity_label = $bag/capacity;
+
+# Drag n drop icon preview
+var drag_preview;
 
 # Variables
 var near_items = [];
@@ -21,12 +27,36 @@ var item_dragged = -1;
 func _ready():
 	reset();
 	register_itemdrop_control($near/base, self, "on_item_dropped_to_near");
+	call_deferred("_later_setup");
+
+func _later_setup():
+	# Create drag and drop preview control
+	drag_preview = TextureRect.new();
+	get_parent().add_child(drag_preview);
+	
+	drag_preview.name = "drag_preview"
+	drag_preview.texture = dragdrop_placeholder;
+	drag_preview.expand = true;
+	drag_preview.rect_size = Vector2(1.0, 1.0) * DRAG_PREVIEW_SIZE;
+	drag_preview.hide();
 
 func _input(event):
 	if (event is InputEventMouseButton):
 		if (item_dragged >= 0 && !event.pressed && event.button_index == BUTTON_LEFT):
 			item_drag_drop(event.global_position);
 			item_dragged = -1;
+			drag_preview.hide();
+	
+	if (event is InputEventMouseMotion):
+		if (item_dragged >= 0):
+			if (!drag_preview.visible):
+				var icon = item_database.get_item_icon(inventory.items[item_dragged].id);
+				if (icon):
+					drag_preview.texture = icon;
+				else:
+					drag_preview.texture = dragdrop_placeholder;
+				drag_preview.show();
+			drag_preview.rect_global_position = event.global_position - (Vector2(1.0, 1.0) * DRAG_PREVIEW_SIZE / 2);
 
 func reset():
 	# Reset item
@@ -47,16 +77,15 @@ func update_interface(container, item_list):
 		container.add_child(instance);
 		
 		# Update item data
-		instance.id = item_list[i].id;
-		instance.title = item_list[i].title;
-		instance.pickable = item_list[i].pickable;
-		instance.usable = item_list[i].usable;
-		instance.update_item();
+		instance.update_item(item_list[i]);
 		
 		instance.connect("pick_item", self, "on_item_pick");
 		instance.connect("item_used", self, "on_item_used");
 		instance.connect("item_drop", self, "on_item_drop");
 		instance.connect("item_pressed", self, "item_pressed");
+	
+	# Clear items
+	item_list.clear();
 
 func refresh_items():
 	if (!item_picker || !inventory):
@@ -68,16 +97,17 @@ func refresh_items():
 	
 	for id in item_picker.nearest_item:
 		var amount = item_picker.nearest_item[id].size();
-		var item_name = item_database.get_item_name(id);
+		var item_size = 1;
 		
 		if (item_database.is_item_stackable(id) && amount > 1):
-			item_name += str(" (", amount, "x)");
+			item_size = amount;
 			amount = 1;
 		
 		for i in range(amount):
 			near_items.append({
 			'id': id,
-			'title': item_name,
+			'item_id': id,
+			'size': item_size,
 			'pickable': true,
 			'usable': false
 		});
@@ -87,13 +117,12 @@ func refresh_items():
 	bag_items.clear();
 	for i in range(inventory.items.size()):
 		var item = inventory.items[i];
-		var item_name = item_database.get_item_name(item.id);
-		if (item.amount > 1):
-			item_name += str(" (", int(item.amount), "x)");
+		var item_name = item_database.get_item_title(item.id);
 		
 		bag_items.append({
 			'id': i,
-			'title': item_name,
+			'item_id': item.id,
+			'size': item.amount,
 			'pickable': false,
 			'usable': item_database.is_item_usable(item.id)
 		});

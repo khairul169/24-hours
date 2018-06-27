@@ -19,3 +19,8 @@ func _init():
 	firing_range = 3.0;
 	firing_mode = MODE_SINGLE;
 	can_aim = false;
+
+func pick_animation():
+	PlayerWeapon.play_animation("pick", false, 0.1);
+	PlayerWeapon.next_think = 0.4;
+	PlayerWeapon.next_idle = PlayerWeapon.next_think;
