@@ -11,9 +11,9 @@ func _input(event):
 		if (event.scancode == KEY_F11 && event.pressed):
 			OS.window_fullscreen = !OS.window_fullscreen;
 
-func _ready():
+func _init():
 	# Reset vars
-	game_time = 0.0;
+	game_time = 5.9;
 	timecycle_ratio = 1.0 / 60.0;
 	
 	# 1 day in game = 30 minutes real life

@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://assets/props/water/basic_water_material.material" type="Material" id=1]
+[ext_resource path="res://assets/props/water/water_material.tres" type="Material" id=1]
 
 [sub_resource type="PlaneMesh" id=1]
 
@@ -45,7 +45,7 @@ lod_max_hysteresis = 0.0
 mesh = SubResource( 1 )
 skeleton = NodePath("..")
 material/0 = null
-_sections_unfolded = [ "Geometry", "Material", "Transform", "material/0", "material_override" ]
+_sections_unfolded = [ "Geometry", "Material", "Transform", "material/0" ]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1"]
 root_node = NodePath("..")

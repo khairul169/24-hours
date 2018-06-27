@@ -24,8 +24,12 @@ func on_item_dropped(id):
 	if (!item_id in item_database.usable_fuels):
 		return;
 	
-	if (inventory.remove_item(id, 1)):
-		campfire_object.add_fuel(item_id);
+	var amount = 1;
+	if (Input.is_key_pressed(KEY_CONTROL)):
+		amount = inventory.get_item_amount(id);
+	if (inventory.remove_item(id, amount)):
+		for i in range(amount):
+			campfire_object.add_fuel(item_id);
 
 func _process(delta):
 	if (!visible || !campfire_object):

@@ -38,13 +38,19 @@ func _ready():
 	hunger = rand_range(0.7, 0.85);
 	thirst = rand_range(0.6, 0.8);
 	next_step = 0.0;
+	last_time = scene.game_time;
 	next_check = 0.0;
 	near_firesrc = false;
 	
 	# Register weapon
 	wpn_fist = weapon.register_weapon("res://scripts/weapon/wpn_fist.gd");
 	
+	# Set current item
+	inventory.using_item = null;
 	weapon.set_current_weapon(wpn_fist);
+	
+	# Give default item
+	inventory.add_item(item_database.ITEM_STICK, int(rand_range(8.0, 14.0)));
 
 func _input(event):
 	if (event is InputEventMouseButton):
@@ -119,17 +125,21 @@ func update_stats(delta):
 	temperature = clamp(temperature + (timecycle_delta * temp_factor), MIN_TEMP, MAX_TEMP);
 	
 	var hunger_factor = 0.083;
-	if (temperature < 22.0):
+	if (temperature < 35.0):
 		hunger_factor *= 1.2;
+	if (is_sprinting):
+		hunger_factor *= 2.0;
 	hunger = clamp(hunger - (timecycle_delta * hunger_factor), 0.0, 1.0);
 	
 	var thirst_factor = 0.125;
-	if (temperature < 20.0):
+	if (!is_moving):
 		thirst_factor *= 0.6;
+	if (is_sprinting):
+		thirst_factor *= 4.8;
 	thirst = clamp(thirst - (timecycle_delta * thirst_factor), 0.0, 1.0);
 	
 	# Disable some ability if player are in weak state
-	if (inventory.is_over_capacity() || temperature < 34.0 || hunger < 0.1 || thirst < 0.1):
+	if (inventory.is_over_capacity() || temperature <= 33.0 || hunger <= 0.0 || thirst < 0.1):
 		can_jump = false;
 		can_sprint = false;
 	else:
