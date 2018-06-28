@@ -21,6 +21,9 @@ func _init():
 	can_aim = false;
 
 func pick_animation():
+	if (PlayerWeapon.next_think > 0.0):
+		return;
+	
 	PlayerWeapon.play_animation("pick", false, 0.1);
-	PlayerWeapon.next_think = 0.4;
-	PlayerWeapon.next_idle = PlayerWeapon.next_think;
+	PlayerWeapon.next_think = 0.2;
+	PlayerWeapon.next_idle = 0.4;

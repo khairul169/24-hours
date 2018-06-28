@@ -49,6 +49,9 @@ func add_item(item_id, amount = 1):
 	update_item();
 
 func _add_item_stacks(item_id, amount):
+	if (amount <= 0):
+		return;
+	
 	var append_item = -1;
 	for i in range(items.size()):
 		if (items[i].id == item_id && items[i].amount < item_database.get_item_maxstack(item_id)):
@@ -56,17 +59,20 @@ func _add_item_stacks(item_id, amount):
 			break;
 		continue;
 	
+	var max_stack = item_database.get_item_maxstack(item_id);
 	if (append_item > -1):
-		var max_stack = item_database.get_item_maxstack(item_id);
 		var amount_filled = items[append_item].amount + amount;
 		if (amount_filled > max_stack):
-			var exceeded_amount = amount_filled - max_stack;
 			items[append_item].amount = max_stack;
-			items.append({"id": item_id, "amount": exceeded_amount});
+			_add_item_stacks(item_id, amount_filled - max_stack);
 		else:
 			items[append_item].amount += amount;
 	else:
-		items.append({"id": item_id, "amount": amount});
+		if (amount > max_stack):
+			_add_item_stacks(item_id, max_stack);
+			_add_item_stacks(item_id, amount - max_stack);
+		else:
+			items.append({"id": item_id, "amount": amount});
 
 func remove_item(slot_id, count = 1):
 	if (slot_id < 0 || slot_id >= items.size()):
