@@ -1,4 +1,4 @@
-extends Spatial
+extends Node
 
 # Game variables
 var game_time = 0.0;
@@ -13,7 +13,7 @@ func _input(event):
 
 func _init():
 	# Reset vars
-	game_time = 5.9;
+	game_time = 8.0;
 	timecycle_ratio = 1.0 / 60.0;
 	
 	# 1 day in game = 30 minutes real life

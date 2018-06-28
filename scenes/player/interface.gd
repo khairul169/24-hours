@@ -40,10 +40,7 @@ func _input(event):
 			toggle_inventory();
 		
 		if (event.scancode == KEY_ESCAPE):
-			if (inventory.visible):
-				toggle_inventory();
-			if (campfire.visible):
-				toggle_campfire();
+			hide_all();
 
 func _process(delta):
 	if (use_prog.visible):
@@ -59,6 +56,13 @@ func toggle_inventory():
 		inventory.refresh_items();
 		inventory.grab_focus();
 		handle_mouse("inventory", true);
+		
+		if (campfire.visible):
+			inventory.rect_position = Vector2(20, 20);
+			inventory.set_anchors_preset(Control.PRESET_LEFT_WIDE);
+		else:
+			inventory.rect_position = (get_rect().size - inventory.get_rect().size) / 2.0;
+			inventory.set_anchors_preset(Control.PRESET_VCENTER_WIDE);
 	
 	else:
 		inventory.hide();
@@ -84,6 +88,12 @@ func toggle_campfire(object = null):
 		
 		if (inventory.visible):
 			toggle_inventory();
+
+func hide_all():
+	if (inventory.visible):
+		toggle_inventory();
+	if (campfire.visible):
+		toggle_campfire();
 
 func show_use_progress(time):
 	use_progress_time = time;

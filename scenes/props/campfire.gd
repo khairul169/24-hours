@@ -32,9 +32,13 @@ func add_fuel(item_id):
 
 func toggle_fire(enable):
 	if (enable):
-		$light.show();
+		$AnimationPlayer.play("idle");
+		$particle1.show();
+		$particle2.show();
 	else:
-		$light.hide();
+		$AnimationPlayer.play("terminated");
+		$particle1.hide();
+		$particle2.hide();
 	
 	$particle1.emitting = enable;
 	$particle2.emitting = enable;

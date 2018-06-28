@@ -27,6 +27,9 @@ void fragment() {
 	}
 	
 	ALBEDO.rgb = col;
+	METALLIC = 0.0;
+	SPECULAR = 0.0;
+	ROUGHNESS = 1.0;
 }
 "
 

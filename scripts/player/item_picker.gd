@@ -1,7 +1,7 @@
 extends Node
 
 const PICK_RANGE = 10.0;
-const NEAR_ITEM_RANGE = 5.0;
+const NEAR_ITEM_RANGE = 3.0;
 const PICKABLE_ITEM_SCRIPT = preload("res://scripts/props/pickable_item.gd");
 const PICK_ITEM_KEY = KEY_F;
 
@@ -55,7 +55,7 @@ func pick_item(object):
 	
 	# Play animation
 	var cur_weapon = player.weapon.get_current_weapon();
-	if (!inventory.using_item && cur_weapon.id == player.weapon_hand):
+	if (cur_weapon.id == player.inventory.weapon_hand):
 		cur_weapon.pick_animation();
 
 func check_near_item():

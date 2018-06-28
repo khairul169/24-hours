@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://scenes/scene.gd" type="Script" id=1]
 [ext_resource path="res://assets/environment.tres" type="Environment" id=2]
@@ -11,12 +11,14 @@
 [ext_resource path="res://scenes/props/campfire.tscn" type="PackedScene" id=9]
 [ext_resource path="res://assets/props/tree/tree01.tscn" type="PackedScene" id=10]
 [ext_resource path="res://assets/props/stick/stick.tscn" type="PackedScene" id=11]
+[ext_resource path="res://assets/props/crate/crate_basic.tscn" type="PackedScene" id=12]
 
-[node name="scene" type="Spatial" index="0"]
+[node name="scene" type="Node" index="0"]
 script = ExtResource( 1 )
 
 [node name="environment" type="WorldEnvironment" parent="." index="0"]
 environment = ExtResource( 2 )
+_sections_unfolded = [ "environment" ]
 
 [node name="sun" type="DirectionalLight" parent="." index="1"]
 transform = Transform( -1, 5.04094e-08, -7.14258e-08, 0, 0.817015, 0.576617, 8.74228e-08, 0.576616, -0.817016, 0, 0, 0 )
@@ -34,7 +36,7 @@ shadow_bias = 0.1
 shadow_contact = 0.0
 shadow_reverse_cull_face = false
 editor_only = false
-directional_shadow_mode = 2
+directional_shadow_mode = 0
 directional_shadow_split_1 = 0.1
 directional_shadow_split_2 = 0.2
 directional_shadow_split_3 = 0.5
@@ -50,7 +52,7 @@ script = ExtResource( 3 )
 worldenv = NodePath("../environment")
 sun_node = NodePath("../sun")
 sky = ExtResource( 4 )
-update_delay = 0.1
+update_delay = 0.0
 
 [node name="player" parent="." index="3" instance=ExtResource( 5 )]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0 )
@@ -122,4 +124,7 @@ transform = Transform( 1, 0, 0, 0, 0.995086, 0.0990122, 0, -0.0990122, 0.995086,
 
 [node name="stick3" parent="props" index="2" instance=ExtResource( 11 )]
 transform = Transform( -0.153034, -0.262533, -0.95271, -0.0512367, 0.964877, -0.257656, 0.986892, 0.00938376, -0.16111, 2.24579, -0.487376, 0.284169 )
+
+[node name="crate_basic" parent="props" index="3" instance=ExtResource( 12 )]
+transform = Transform( 0.961873, -0.273497, 0, 0.273497, 0.961873, 0, 0, 0, 1, 0.804332, -0.885933, 2.29017 )
 

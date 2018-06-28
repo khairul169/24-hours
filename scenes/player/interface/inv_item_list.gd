@@ -9,6 +9,7 @@ signal item_pressed(id);
 # Variables
 var id = -1;
 var pickable = false;
+var usable = false;
 
 func _ready():
 	$item_action/btn_use.connect("pressed", self, "_use");
@@ -40,12 +41,18 @@ func update_item(data):
 	else:
 		$item_data/amount.text = "NULL";
 	
-	if (data.usable):
-		$item_action/btn_use.disabled = false;
-	else:
-		$item_action/btn_use.disabled = true;
+	# Use button
+	usable = data.usable;
+	$item_action/btn_use.disabled = !usable;
 
 func toggle_action(show):
+	if (Input.is_key_pressed(KEY_SHIFT) && usable):
+		_use();
+		return;
+	
+	if (Input.is_key_pressed(KEY_CONTROL)):
+		_drop();
+	
 	if (show && !pickable):
 		$item_action.show();
 		grab_focus();

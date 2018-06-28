@@ -8,6 +8,7 @@ onready var scene = get_parent();
 onready var inventory = $inventory;
 onready var item_picker = $item_picker;
 onready var weapon = $weapon;
+onready var interface = $interface;
 
 # Variables
 var health = 0.0;
@@ -20,9 +21,6 @@ var next_step = 0.0;
 var last_time = 0.0;
 var next_check = 0.0;
 var near_firesrc = false;
-
-# Weapon identifier
-var weapon_hand;
 
 func _init():
 	# Initialize character
@@ -43,14 +41,8 @@ func _ready():
 	next_check = 0.0;
 	near_firesrc = false;
 	
-	# Register weapon
-	weapon_hand = weapon.register_weapon("res://scripts/weapon/weapon_hand.gd");
-	
-	# Set current item
-	inventory.using_item = null;
-	weapon.set_current_weapon(weapon_hand);
-	
 	# Give default item
+	inventory.add_item(item_database.ITEM_THERMOMETER);
 	inventory.add_item(item_database.ITEM_STICK, int(rand_range(8.0, 14.0)));
 
 func _input(event):

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scenes/props/campfire.gd" type="Script" id=1]
 [ext_resource path="res://assets/props/campfire/campfire.tscn" type="PackedScene" id=2]
@@ -8,53 +8,11 @@
 
 extents = Vector3( 0.337552, 0.199056, 0.398721 )
 
-[sub_resource type="Animation" id=2]
-
-length = 8.0
-loop = true
-step = 0.1
-tracks/0/type = "value"
-tracks/0/path = NodePath("light:omni_range")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 1, 1.8, 2.8, 3.8, 5.4, 6.6, 8 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
-"update": 0,
-"values": [ 5.0, 5.77101, 4.3, 5.0, 6.66092, 5.0, 5.4, 5.0 ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("light:light_energy")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 0.8, 2.4, 4.2, 6, 8 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
-"update": 0,
-"values": [ 3.51, 1.85, 2.95, 2.12, 4.05, 3.51 ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath("light:transform")
-tracks/2/interp = 2
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0, 1.2, 2.6, 4, 5.6, 7, 8 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15033, 0 ), Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.525906, 1.04336, -0.17511 ), Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0148548, 1.10664, 0.0859973 ), Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.106636, 1.16414, -0.105415 ), Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.365232, 1.07096, 0.183265 ), Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00535655, 1.37912, 0.0916324 ), Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15033, 0 ) ]
-}
-
-[sub_resource type="SpatialMaterial" id=3]
+[sub_resource type="SpatialMaterial" id=2]
 
 render_priority = 0
 flags_transparent = true
-flags_unshaded = true
+flags_unshaded = false
 flags_vertex_lighting = false
 flags_no_depth_test = false
 flags_use_point_size = false
@@ -77,14 +35,18 @@ params_use_alpha_scissor = false
 particles_anim_h_frames = 1
 particles_anim_v_frames = 1
 particles_anim_loop = 0
-albedo_color = Color( 0.929412, 0.662745, 0.207843, 1 )
+albedo_color = Color( 0.913725, 0.494118, 0.192157, 1 )
 albedo_texture = ExtResource( 3 )
 metallic = 0.0
 metallic_specular = 0.5
 metallic_texture_channel = 0
 roughness = 0.0
 roughness_texture_channel = 0
-emission_enabled = false
+emission_enabled = true
+emission = Color( 1, 0.729412, 0.160784, 1 )
+emission_energy = 1.0
+emission_operator = 0
+emission_on_uv2 = false
 normal_enabled = false
 rim_enabled = false
 clearcoat_enabled = false
@@ -105,23 +67,23 @@ uv2_triplanar = false
 uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_enable = false
-_sections_unfolded = [ "Albedo" ]
+_sections_unfolded = [ "Albedo", "Emission" ]
 
-[sub_resource type="Curve" id=4]
+[sub_resource type="Curve" id=3]
 
 min_value = 0.0
 max_value = 1.0
 bake_resolution = 100
-_data = [ Vector2( 0, 0.9752 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.5176 ), 0.0, 0.0, 0, 0 ]
+_data = [ Vector2( 0, 0.9752 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=5]
+[sub_resource type="CurveTexture" id=4]
 
 flags = 4
 width = 2048
-curve = SubResource( 4 )
+curve = SubResource( 3 )
 _sections_unfolded = [ "curve" ]
 
-[sub_resource type="ParticlesMaterial" id=6]
+[sub_resource type="ParticlesMaterial" id=5]
 
 render_priority = 0
 trail_divisor = 1
@@ -149,7 +111,7 @@ angle = 0.0
 angle_random = 0.0
 scale = 0.5
 scale_random = 0.0
-scale_curve = SubResource( 5 )
+scale_curve = SubResource( 4 )
 color = Color( 1, 1, 1, 1 )
 hue_variation = 0.0
 hue_variation_random = 0.0
@@ -158,15 +120,15 @@ anim_speed_random = 0.0
 anim_offset = 0.0
 anim_offset_random = 0.0
 anim_loop = false
-_sections_unfolded = [ "Gravity", "Scale", "Spread" ]
+_sections_unfolded = [ "Gravity", "Scale", "Spread", "scale_curve" ]
 
-[sub_resource type="QuadMesh" id=7]
+[sub_resource type="QuadMesh" id=6]
 
 custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
 flip_faces = false
 size = Vector2( 1, 1 )
 
-[sub_resource type="SpatialMaterial" id=8]
+[sub_resource type="SpatialMaterial" id=7]
 
 render_priority = 0
 flags_transparent = true
@@ -193,10 +155,10 @@ params_use_alpha_scissor = false
 particles_anim_h_frames = 1
 particles_anim_v_frames = 1
 particles_anim_loop = 0
-albedo_color = Color( 0.701961, 0.701961, 0.701961, 0.878431 )
+albedo_color = Color( 0.196078, 0.196078, 0.196078, 0.87451 )
 albedo_texture = ExtResource( 3 )
 metallic = 0.0
-metallic_specular = 0.5
+metallic_specular = 0.0
 metallic_texture_channel = 0
 roughness = 0.0
 roughness_texture_channel = 0
@@ -223,7 +185,7 @@ proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo" ]
 
-[sub_resource type="ParticlesMaterial" id=9]
+[sub_resource type="ParticlesMaterial" id=8]
 
 render_priority = 0
 trail_divisor = 1
@@ -251,7 +213,7 @@ angle = 0.0
 angle_random = 0.0
 scale = 0.4
 scale_random = 0.0
-scale_curve = SubResource( 5 )
+scale_curve = SubResource( 4 )
 color = Color( 1, 1, 1, 1 )
 hue_variation = 0.0
 hue_variation_random = 0.0
@@ -261,6 +223,67 @@ anim_offset = 0.0
 anim_offset_random = 0.0
 anim_loop = false
 _sections_unfolded = [ "Gravity", "scale_curve" ]
+
+[sub_resource type="Animation" id=9]
+
+length = 8.0
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("light:omni_range")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1, 1.8, 2.8, 3.8, 5.4, 6.6, 8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 8.0, 12.0, 9.0, 14.0, 8.0, 12.0, 10.0, 8.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("light:light_energy")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.8, 2.4, 4.2, 6, 8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 3.51, 1.85, 2.95, 2.12, 4.05, 3.51 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("light:transform")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 1.2, 2.6, 4, 5.6, 7, 8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15033, 0 ), Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.525906, 1.04336, -0.17511 ), Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0148548, 1.10664, 0.0859973 ), Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.106636, 1.16414, -0.105415 ), Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.365232, 1.07096, 0.183265 ), Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00535655, 1.37912, 0.0916324 ), Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15033, 0 ) ]
+}
+
+[sub_resource type="Animation" id=10]
+
+resource_name = "terminated"
+length = 0.2
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("light:light_energy")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 3.51, 0.0 ]
+}
 
 [node name="campfire" type="StaticBody" index="0"]
 input_ray_pickable = true
@@ -272,7 +295,7 @@ bounce = 0.0
 constant_linear_velocity = Vector3( 0, 0, 0 )
 constant_angular_velocity = Vector3( 0, 0, 0 )
 script = ExtResource( 1 )
-_sections_unfolded = [ "Transform" ]
+_sections_unfolded = [ "Transform", "Visibility" ]
 campfire_range = 6.0
 
 [node name="shape" type="CollisionShape" parent="." index="0"]
@@ -280,10 +303,10 @@ shape = SubResource( 1 )
 disabled = false
 
 [node name="light" type="OmniLight" parent="." index="1"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.48425e-05, 1.15096, 0.000253901 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15033, 0 )
 layers = 1
 light_color = Color( 1, 0.545098, 0.180392, 1 )
-light_energy = 3.51075
+light_energy = 3.51
 light_indirect_energy = 1.0
 light_negative = false
 light_specular = 0.5
@@ -291,31 +314,21 @@ light_bake_mode = 1
 light_cull_mask = -1
 shadow_enabled = false
 shadow_color = Color( 0, 0, 0, 1 )
-shadow_bias = 0.15
+shadow_bias = 0.01
 shadow_contact = 0.0
 shadow_reverse_cull_face = false
 editor_only = false
-omni_range = 5.00079
-omni_attenuation = 2.0
+omni_range = 5.0
+omni_attenuation = 3.4822
 omni_shadow_mode = 1
 omni_shadow_detail = 1
-_sections_unfolded = [ "Omni", "Transform" ]
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="2"]
-root_node = NodePath("..")
-autoplay = "idle"
-playback_process_mode = 1
-playback_default_blend_time = 0.0
-playback_speed = 1.0
-anims/idle = SubResource( 2 )
-blend_times = [  ]
+[node name="scene" parent="." index="2" instance=ExtResource( 2 )]
 
-[node name="scene" parent="." index="3" instance=ExtResource( 2 )]
-
-[node name="particle1" type="Particles" parent="." index="4"]
+[node name="particle1" type="Particles" parent="." index="3"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.115279, 0 )
 layers = 1
-material_override = SubResource( 3 )
+material_override = SubResource( 2 )
 cast_shadow = 0
 extra_cull_margin = 0.0
 use_in_baked_light = false
@@ -324,36 +337,7 @@ lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
 emitting = true
-amount = 8
-lifetime = 0.5
-one_shot = false
-preprocess = 0.0
-speed_scale = 1.0
-explosiveness = 0.0
-randomness = 0.0
-fixed_fps = 0
-fract_delta = true
-visibility_aabb = AABB( -4, -4, -4, 8, 8, 8 )
-local_coords = false
-draw_order = 0
-process_material = SubResource( 6 )
-draw_passes = 1
-draw_pass_1 = SubResource( 7 )
-_sections_unfolded = [ "Geometry", "Process Material", "Time", "material_override", "process_material" ]
-
-[node name="particle2" type="Particles" parent="." index="5"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.0238943, 0 )
-layers = 1
-material_override = SubResource( 8 )
-cast_shadow = 0
-extra_cull_margin = 0.0
-use_in_baked_light = false
-lod_min_distance = 0.0
-lod_min_hysteresis = 0.0
-lod_max_distance = 0.0
-lod_max_hysteresis = 0.0
-emitting = true
-amount = 8
+amount = 16
 lifetime = 0.4
 one_shot = false
 preprocess = 0.0
@@ -365,8 +349,48 @@ fract_delta = true
 visibility_aabb = AABB( -4, -4, -4, 8, 8, 8 )
 local_coords = false
 draw_order = 0
-process_material = SubResource( 9 )
+process_material = SubResource( 5 )
 draw_passes = 1
-draw_pass_1 = SubResource( 7 )
-_sections_unfolded = [ "Geometry", "Process Material", "Time", "material_override", "process_material" ]
+draw_pass_1 = SubResource( 6 )
+_sections_unfolded = [ "Geometry", "Process Material", "Time", "material_override" ]
+
+[node name="particle2" type="Particles" parent="." index="4"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.451555, 0 )
+layers = 1
+material_override = SubResource( 7 )
+cast_shadow = 0
+extra_cull_margin = 0.0
+use_in_baked_light = false
+lod_min_distance = 0.0
+lod_min_hysteresis = 0.0
+lod_max_distance = 0.0
+lod_max_hysteresis = 0.0
+emitting = true
+amount = 8
+lifetime = 0.6
+one_shot = false
+preprocess = 0.0
+speed_scale = 1.0
+explosiveness = 0.0
+randomness = 0.0
+fixed_fps = 0
+fract_delta = true
+visibility_aabb = AABB( -4.41782, -4, -4, 8.83564, 8, 8 )
+local_coords = false
+draw_order = 0
+process_material = SubResource( 8 )
+draw_passes = 1
+draw_pass_1 = SubResource( 6 )
+_sections_unfolded = [ "Geometry", "Process Material", "Time", "material_override" ]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="5"]
+root_node = NodePath("..")
+autoplay = "idle"
+playback_process_mode = 1
+playback_default_blend_time = 0.1
+playback_speed = 1.0
+anims/idle = SubResource( 9 )
+anims/terminated = SubResource( 10 )
+blend_times = [  ]
+_sections_unfolded = [ "Playback Options" ]
 

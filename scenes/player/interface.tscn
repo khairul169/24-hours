@@ -7,10 +7,14 @@
 [ext_resource path="res://scenes/player/interface/campfire_ui.tscn" type="PackedScene" id=5]
 
 [node name="interface" type="Control" index="0"]
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -512.0
+margin_top = -288.0
+margin_right = 512.0
+margin_bottom = 288.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -87,15 +91,20 @@ nine_patch_stretch = false
 
 [node name="inventory" parent="." index="2" instance=ExtResource( 4 )]
 anchor_left = 0.0
+anchor_top = 0.0
 anchor_right = 0.0
+anchor_bottom = 1.0
 margin_left = 20.0
-margin_top = -268.0
+margin_top = 20.0
 margin_right = 508.0
-margin_bottom = 264.0
+margin_bottom = -24.0
 
 [node name="campfire" parent="." index="3" instance=ExtResource( 5 )]
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 margin_left = 530.0
-margin_top = -268.0
-margin_right = 870.0
-margin_bottom = 264.0
+margin_top = 20.0
+margin_right = -24.0
+margin_bottom = -24.0
 

@@ -4,8 +4,9 @@ extends Node
 enum {
 	ITEM_NONE = 0,
 	ITEM_STICK,
-	ITEM_BRANCH,
-	ITEM_STONE
+	
+	# Medic item
+	ITEM_THERMOMETER
 };
 
 class Item extends Reference:
@@ -46,13 +47,17 @@ var item_description = {};
 func _ready():
 	# Item list
 	register_item(ITEM_STICK, "stick", 0.2, false, 10);
+	register_item(ITEM_THERMOMETER, "thermometer", 0.8, true);
 	
 	# Item world scene
 	set_item_scene(ITEM_STICK, "res://assets/props/stick/stick.tscn");
+	set_item_scene(ITEM_THERMOMETER, "res://assets/weapon/thermometer/world_item.tscn");
 	
 	# Item title and description
 	item_title[ITEM_STICK] = "Stick";
 	item_description[ITEM_STICK] = "Just a lonely stick. Can be used as a fuel source.";
+	item_title[ITEM_THERMOMETER] = "Thermometer";
+	item_description[ITEM_THERMOMETER] = "Ancient stuff that can be used to examine body temperature.";
 
 ############################################################################
 

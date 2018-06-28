@@ -4,6 +4,7 @@ const CAST_RANGE = 2.0;
 const USE_KEY = KEY_E;
 
 const PROP_CAMPFIRE = preload("res://scenes/props/campfire.gd");
+const PROP_CRATE = preload("res://scripts/props/crate.gd");
 
 # Nodes
 onready var interface = get_node("../interface");
@@ -52,17 +53,30 @@ func _process(delta):
 func current_usable():
 	if (!current_object):
 		return false;
-	if (current_object is PROP_CAMPFIRE):
+	
+	if (current_object is PROP_CAMPFIRE || current_object is PROP_CRATE):
 		return true;
+	
 	return false;
 
 func get_use_time():
 	if (!current_object):
 		return 1.0;
+	
 	if (current_object is PROP_CAMPFIRE):
 		return 0.4;
+	
+	if (current_object is PROP_CRATE):
+		if (current_object.is_opened):
+			return 0.5;
+		else:
+			return 1.0;
+	
 	return 1.0;
 
 func use_current_object():
 	if (current_object is PROP_CAMPFIRE):
 		interface.toggle_campfire(current_object);
+	
+	if (current_object is PROP_CRATE):
+		current_object.is_opened = true;
