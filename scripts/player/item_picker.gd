@@ -55,7 +55,7 @@ func pick_item(object):
 	
 	# Play animation
 	var cur_weapon = player.weapon.get_current_weapon();
-	if (!inventory.using_item && cur_weapon.id == player.wpn_fist):
+	if (!inventory.using_item && cur_weapon.id == player.weapon_hand):
 		cur_weapon.pick_animation();
 
 func check_near_item():

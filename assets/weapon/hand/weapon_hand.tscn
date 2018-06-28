@@ -1,6 +1,8 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://assets/weapon/fist/weapon_fist.dae" type="PackedScene" id=1]
+[ext_resource path="res://assets/weapon/hand/weapon_hand.dae" type="PackedScene" id=1]
+
+
 
 [node name="weapon_fist" index="0" instance=ExtResource( 1 )]
 

@@ -2,10 +2,10 @@ extends "res://gfps/scripts/weapon/base_weapon.gd"
 
 func _init():
 	# Weapon name
-	name = "Fist";
+	name = "Hand";
 	
 	# Resources
-	view_scene = "res://assets/weapon/fist/weapon_fist.tscn";
+	view_scene = "res://assets/weapon/hand/weapon_hand.tscn";
 	
 	# Weapon stats
 	clip = 0;

@@ -21,7 +21,8 @@ var last_time = 0.0;
 var next_check = 0.0;
 var near_firesrc = false;
 
-var wpn_fist;
+# Weapon identifier
+var weapon_hand;
 
 func _init():
 	# Initialize character
@@ -43,11 +44,11 @@ func _ready():
 	near_firesrc = false;
 	
 	# Register weapon
-	wpn_fist = weapon.register_weapon("res://scripts/weapon/wpn_fist.gd");
+	weapon_hand = weapon.register_weapon("res://scripts/weapon/weapon_hand.gd");
 	
 	# Set current item
 	inventory.using_item = null;
-	weapon.set_current_weapon(wpn_fist);
+	weapon.set_current_weapon(weapon_hand);
 	
 	# Give default item
 	inventory.add_item(item_database.ITEM_STICK, int(rand_range(8.0, 14.0)));
