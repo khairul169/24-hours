@@ -71,10 +71,11 @@ func reset():
 func _process(delta):
 	if (!visible):
 		return;
+	
 	if (player):
 		label_health.text = str(int(player.health)).pad_zeros(1) + "%";
-		label_hunger.text = str(int(player.hunger * 100.0)).pad_zeros(1) + "%";
-		label_thirst.text = str(int(player.thirst * 100.0)).pad_zeros(1) + "%";
+		label_hunger.text = str(int(ceil(player.hunger * 100.0))).pad_zeros(1) + "%";
+		label_thirst.text = str(int(ceil(player.thirst * 100.0))).pad_zeros(1) + "%";
 
 func update_interface(container, item_list):
 	for i in container.get_children():

@@ -124,6 +124,16 @@ func use_item(slot_id):
 	if (!item_database.is_item_usable(item_id)):
 		return;
 	
+	# Foods
+	if (item_database.foods.has(item_id)):
+		consume_food(slot_id);
+		return;
+	
+	# Drinks
+	if (item_database.drinks.has(item_id)):
+		consume_drinks(slot_id);
+		return;
+	
 	# Thermometer
 	if (item_id == item_database.ITEM_THERMOMETER):
 		item_used = slot_id;
@@ -214,3 +224,13 @@ func spawn_item(id, pos, normal):
 	instance.transform = instance.transform.looking_at(normal, Vector3(0, 1, 0));
 	instance.transform = instance.transform.rotated(normal, deg2rad(randi() % 360));
 	instance.global_transform.origin = pos;
+
+func consume_food(id):
+	var value = item_database.foods[items[id].id];
+	player.hunger = clamp(player.hunger + value, 0.0, 1.0);
+	remove_item(id, 1);
+
+func consume_drinks(id):
+	var value = item_database.drinks[items[id].id];
+	player.thirst = clamp(player.thirst + value, 0.0, 1.0);
+	remove_item(id, 1);

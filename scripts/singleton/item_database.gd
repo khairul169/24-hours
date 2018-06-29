@@ -7,7 +7,47 @@ enum {
 	
 	# Medic item
 	ITEM_THERMOMETER
+	
+	# Edible foods
+	ITEM_BOTTLED_WATER,
+	ITEM_CANNED_TUNA
 };
+
+var items = {};
+var item_title = {};
+var item_description = {};
+
+# Item categories
+var usable_fuels = {
+	ITEM_STICK: 30.0
+};
+var foods = {
+	ITEM_CANNED_TUNA: 0.25
+};
+var drinks = {
+	ITEM_BOTTLED_WATER: 0.4
+};
+
+func _init():
+	# Item list
+	register_item(ITEM_STICK, "stick", 0.2, false, 10);
+	register_item(ITEM_THERMOMETER, "thermometer", 0.8, true);
+	register_item(ITEM_BOTTLED_WATER, "bottled_water", 0.2, true);
+	register_item(ITEM_CANNED_TUNA, "canned_tuna", 0.4, true);
+	
+	# Item world scene
+	set_item_scene(ITEM_STICK, "res://assets/props/stick/stick.tscn");
+	set_item_scene(ITEM_THERMOMETER, "res://assets/weapon/thermometer/world_item.tscn");
+	set_item_scene(ITEM_BOTTLED_WATER, "res://assets/props/foods/bottled_water.tscn");
+	set_item_scene(ITEM_CANNED_TUNA, "res://assets/props/foods/canned_tuna.tscn");
+	
+	# Item title and description
+	translate_item(ITEM_STICK, "Stick", "Just a lonely stick. Can be used as a fuel source.");
+	translate_item(ITEM_THERMOMETER, "Thermometer", "Ancient stuff that can be used to examine body temperature.");
+	translate_item(ITEM_BOTTLED_WATER, "Bottled Water", "Fresh water from the nature");
+	translate_item(ITEM_CANNED_TUNA, "Canned Tuna", "Free food laying around that are ready to eat.");
+
+############################################################################
 
 class Item extends Reference:
 	var id = 0;
@@ -37,36 +77,16 @@ class Item extends Reference:
 			return;
 		scene = load(path);
 
-var items = {};
-var usable_fuels = {
-	ITEM_STICK: 30.0
-};
-var item_title = {};
-var item_description = {};
-
-func _ready():
-	# Item list
-	register_item(ITEM_STICK, "stick", 0.2, false, 10);
-	register_item(ITEM_THERMOMETER, "thermometer", 0.8, true);
-	
-	# Item world scene
-	set_item_scene(ITEM_STICK, "res://assets/props/stick/stick.tscn");
-	set_item_scene(ITEM_THERMOMETER, "res://assets/weapon/thermometer/world_item.tscn");
-	
-	# Item title and description
-	item_title[ITEM_STICK] = "Stick";
-	item_description[ITEM_STICK] = "Just a lonely stick. Can be used as a fuel source.";
-	item_title[ITEM_THERMOMETER] = "Thermometer";
-	item_description[ITEM_THERMOMETER] = "Ancient stuff that can be used to examine body temperature.";
-
-############################################################################
-
-func register_item(id, name, weight, usable, max_stacks = 1):
+func register_item(id, name, weight, usable = false, max_stacks = 1):
 	items[id] = Item.new(id, name, weight, usable, max_stacks);
 
 func set_item_scene(id, path):
 	if (items.has(id)):
 		items[id].set_scene(path);
+
+func translate_item(id, title, desc):
+	item_title[id] = title;
+	item_description[id] = desc;
 
 func is_item_valid(id):
 	return items.has(id);
