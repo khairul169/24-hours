@@ -5,7 +5,7 @@ export var campfire_range = 5.0;
 
 # Variables
 var next_burn = 0.0;
-var fuels = [];
+var fuels = {'item_id': 0, 'amount': 0};
 
 func _ready():
 	toggle_fire(false);
@@ -16,19 +16,30 @@ func _process(delta):
 		next_burn = max(next_burn - delta, 0.0);
 		
 		if (next_burn <= 0.0):
-			if (fuels.size() > 0):
-				add_fuel(fuels[0]);
-				fuels.remove(0);
+			if (fuels.amount > 0):
+				toggle_fire(true);
+				next_burn += item_database.usable_fuels[fuels.item_id];
+				fuels.amount -= 1;
 			else:
 				toggle_fire(false);
+				fuels.item_id = 0;
+				fuels.amount = 0;
 
-func add_fuel(item_id):
+func fuel_compatible(item_id):
+	return ((fuels.item_id <= 0 || fuels.item_id == item_id) && item_database.usable_fuels.has(item_id));
+
+func add_fuel(item_id, amount):
+	if (!item_database.usable_fuels.has(item_id) || amount <= 0):
+		return;
+	
 	if (next_burn <= 0.0):
-		if (item_database.usable_fuels.has(item_id)):
-			next_burn += item_database.usable_fuels[item_id];
-			toggle_fire(true);
+		next_burn += item_database.usable_fuels[item_id];
+		fuels.item_id = item_id;
+		fuels.amount = amount-1;
+		toggle_fire(true);
 	else:
-		fuels.append(item_id);
+		fuels.item_id = item_id;
+		fuels.amount += amount;
 
 func toggle_fire(enable):
 	if (enable):
@@ -45,9 +56,8 @@ func toggle_fire(enable):
 
 func get_estimation():
 	var est = next_burn;
-	for i in fuels:
-		if (item_database.usable_fuels.has(i)):
-			est += item_database.usable_fuels[i];
+	if (fuels.item_id > 0 && item_database.usable_fuels.has(fuels.item_id)):
+		est += fuels.amount * item_database.usable_fuels[fuels.item_id];
 	return est;
 
 func is_emitting():

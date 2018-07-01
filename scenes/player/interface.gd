@@ -1,5 +1,7 @@
 extends Control
 
+const DRAG_PREVIEW_SIZE = 48.0;
+
 # Nodes
 onready var player = get_parent();
 onready var inventory = $inventory;
@@ -11,6 +13,10 @@ var mouse_handler = [];
 var use_progress_time = 0.0;
 var use_progress_curr = 0.0;
 
+var drag_preview;
+var itemdrop_controls = [];
+var item_dragged = null;
+
 func _ready():
 	# Reset everything
 	inventory.hide();
@@ -18,6 +24,13 @@ func _ready():
 	mouse_handler.clear();
 	use_prog.hide();
 	use_prog.value = 0.0;
+	
+	drag_preview = TextureRect.new();
+	add_child(drag_preview);
+	drag_preview.name = "drag_preview"
+	drag_preview.expand = true;
+	drag_preview.rect_size = Vector2(1.0, 1.0) * DRAG_PREVIEW_SIZE;
+	drag_preview.hide();
 
 func handle_mouse(handler, handle):
 	if (handle && !mouse_handler.has(handler)):
@@ -41,6 +54,20 @@ func _input(event):
 		
 		if (event.scancode == KEY_ESCAPE):
 			hide_all();
+	
+	if (event is InputEventMouseButton):
+		if (item_dragged != null && !event.pressed && event.button_index == BUTTON_LEFT):
+			item_dropped(event.global_position);
+			item_dragged = null;
+			drag_preview.hide();
+	
+	if (event is InputEventMouseMotion):
+		if (item_dragged != null):
+			if (!drag_preview.visible && player.inventory):
+				if (item_dragged.drag_icon):
+					drag_preview.texture = item_dragged.drag_icon;
+				drag_preview.show();
+			drag_preview.rect_global_position = event.global_position - (Vector2(1.0, 1.0) * DRAG_PREVIEW_SIZE / 2);
 
 func _process(delta):
 	if (use_prog.visible):
@@ -103,3 +130,25 @@ func show_use_progress(time):
 func hide_use_progress():
 	use_prog.value = 0.0;
 	use_prog.hide();
+
+func register_itemdrop_control(node, target, method):
+	itemdrop_controls.append({
+		'node': node,
+		'target': target,
+		'method': method
+	});
+
+func item_pressed(object):
+	if (!object is preload("res://scenes/player/interface/dragdrop_item.gd")):
+		return;
+	item_dragged = object;
+
+func item_dropped(pos):
+	if (!item_dragged):
+		return;
+	
+	for i in itemdrop_controls:
+		if (!i.node.visible || !i.node.get_global_rect().has_point(pos)):
+			continue;
+		if (i.target && i.target.has_method(i.method)):
+			i.target.call(i.method, item_dragged);

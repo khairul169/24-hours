@@ -1,13 +1,14 @@
 [gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scenes/player/interface/inventory_ui.gd" type="Script" id=1]
-[ext_resource path="res://scenes/player/interface/inv_item_list.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/player/interface/inventory_item.tscn" type="PackedScene" id=2]
 [ext_resource path="res://icon.png" type="Texture" id=3]
 [ext_resource path="res://assets/fonts/OpenSans-Light.ttf" type="DynamicFontData" id=4]
 [ext_resource path="res://assets/fonts/OpenSans-Regular.ttf" type="DynamicFontData" id=5]
 [ext_resource path="res://assets/sprites/ui/icon_health.png" type="Texture" id=6]
 [ext_resource path="res://assets/sprites/ui/icon_hunger.png" type="Texture" id=7]
 [ext_resource path="res://assets/sprites/ui/icon_thirst.png" type="Texture" id=8]
+
 
 [sub_resource type="DynamicFont" id=1]
 

@@ -1,29 +1,29 @@
-extends Control
+extends "dragdrop_item.gd"
 
 # Signals
-signal pick_item(id);
-signal item_used(id);
-signal item_drop(id, all);
-signal item_pressed(id);
+signal item_used(object);
+signal item_drop(object, all);
 
 # Variables
 var id = -1;
-var pickable = false;
 var usable = false;
 
 func _ready():
+	rect_object = $item_data/hover_area;
+	connect("released", self, "_released");
+	toggle_action(false);
+	
 	$item_action/btn_use.connect("pressed", self, "_use");
 	$item_action/btn_drop.connect("pressed", self, "_drop");
-	toggle_action(false);
 
 func update_item(data):
 	id = data.id;
-	pickable = data.pickable;
 	
 	# Icon
 	var icon = item_database.get_item_icon(data.item_id);
 	if (icon):
 		$item_data/icon.texture = icon;
+		drag_icon = icon;
 	
 	# Title
 	var title = item_database.get_item_title(data.item_id);
@@ -53,7 +53,7 @@ func toggle_action(show):
 	if (Input.is_key_pressed(KEY_CONTROL)):
 		_drop();
 	
-	if (show && !pickable):
+	if (show && source == 0):
 		$item_action.show();
 		grab_focus();
 	else:
@@ -63,23 +63,17 @@ func toggle_action(show):
 func is_action_visible():
 	return $item_action.visible;
 
-func _input(event):
-	if (event is InputEventMouseButton):
-		var in_rect = $item_data/hover_area.get_global_rect().has_point(event.global_position);
-		
-		if (event.button_index == BUTTON_LEFT):
-			if (event.pressed && in_rect && !pickable):
-				emit_signal("item_pressed", id);
-			
-			if (!event.pressed && in_rect):
-				if (pickable):
-					emit_signal("pick_item", id);
-				else:
-					toggle_action(!is_action_visible());
+func _released(obj):
+	if (source == 0):
+		toggle_action(!is_action_visible());
+		pressed = false;
 
 func _use():
-	emit_signal("item_used", id);
+	if (usable && source == 0):
+		emit_signal("item_used", self);
 
 func _drop():
+	if (source != 0):
+		return;
 	var all = Input.is_key_pressed(KEY_CONTROL);
-	emit_signal("item_drop", id, all);
+	emit_signal("item_drop", self, all);

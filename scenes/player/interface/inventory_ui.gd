@@ -1,14 +1,10 @@
 extends Control
 
-export (PackedScene) var item_list_scene;
-export (Texture) var dragdrop_placeholder;
-
-const DRAG_PREVIEW_SIZE = 48.0;
-
 # Nodes
-onready var player = get_node("../../");
-onready var inventory = get_node("../../inventory");
-onready var item_picker = get_node("../../item_picker");
+onready var interface = get_parent();
+onready var player = interface.get_parent();
+onready var inventory = player.get_node("inventory");
+onready var item_picker = player.get_node("item_picker");
 
 # UI node
 onready var near_item_container = $near/base/scroll_container/container;
@@ -18,49 +14,18 @@ onready var label_health = $state/label_health;
 onready var label_hunger = $state/label_hunger;
 onready var label_thirst = $state/label_thirst;
 
-# Drag n drop icon preview
-var drag_preview;
+# Scenes
+onready var item_list_scene = load("res://scenes/player/interface/inventory_item.tscn");
 
 # Variables
 var near_items = [];
 var bag_items = [];
 var next_update = 0.0;
-var itemdrop_controls = [];
-var item_dragged = -1;
 
 func _ready():
 	reset();
-	register_itemdrop_control($near/base, self, "on_item_dropped_to_near");
-	call_deferred("_later_setup");
-
-func _later_setup():
-	# Create drag and drop preview control
-	drag_preview = TextureRect.new();
-	get_parent().add_child(drag_preview);
-	
-	drag_preview.name = "drag_preview"
-	drag_preview.texture = dragdrop_placeholder;
-	drag_preview.expand = true;
-	drag_preview.rect_size = Vector2(1.0, 1.0) * DRAG_PREVIEW_SIZE;
-	drag_preview.hide();
-
-func _input(event):
-	if (event is InputEventMouseButton):
-		if (item_dragged >= 0 && !event.pressed && event.button_index == BUTTON_LEFT):
-			item_drag_drop(event.global_position);
-			item_dragged = -1;
-			drag_preview.hide();
-	
-	if (event is InputEventMouseMotion):
-		if (item_dragged >= 0):
-			if (!drag_preview.visible):
-				var icon = item_database.get_item_icon(inventory.items[item_dragged].id);
-				if (icon):
-					drag_preview.texture = icon;
-				else:
-					drag_preview.texture = dragdrop_placeholder;
-				drag_preview.show();
-			drag_preview.rect_global_position = event.global_position - (Vector2(1.0, 1.0) * DRAG_PREVIEW_SIZE / 2);
+	interface.register_itemdrop_control($bag/base, self, "_item_dropped_at_bag");
+	interface.register_itemdrop_control($near/base, self, "_item_dropped_at_near");
 
 func reset():
 	# Reset item
@@ -77,7 +42,7 @@ func _process(delta):
 		label_hunger.text = str(int(ceil(player.hunger * 100.0))).pad_zeros(1) + "%";
 		label_thirst.text = str(int(ceil(player.thirst * 100.0))).pad_zeros(1) + "%";
 
-func update_interface(container, item_list):
+func update_interface(container, item_list, inventory_item):
 	for i in container.get_children():
 		i.queue_free();
 	
@@ -90,12 +55,18 @@ func update_interface(container, item_list):
 		container.add_child(instance);
 		
 		# Update item data
+		instance.interface = interface;
+		if (inventory_item):
+			instance.source = 0;
+		else:
+			instance.source = 1;
 		instance.update_item(item_list[i]);
 		
-		instance.connect("pick_item", self, "on_item_pick");
-		instance.connect("item_used", self, "on_item_used");
-		instance.connect("item_drop", self, "on_item_drop");
-		instance.connect("item_pressed", self, "item_pressed");
+		if (inventory_item):
+			instance.connect("item_used", self, "on_item_used");
+			instance.connect("item_drop", self, "on_item_drop");
+		else:
+			instance.connect("released", self, "pick_near_item");
 	
 	# Clear items
 	item_list.clear();
@@ -121,10 +92,9 @@ func refresh_items():
 			'id': id,
 			'item_id': id,
 			'size': item_size,
-			'pickable': true,
 			'usable': false
 		});
-	update_interface(near_item_container, near_items);
+	update_interface(near_item_container, near_items, false);
 	
 	# Bag item
 	bag_items.clear();
@@ -136,10 +106,9 @@ func refresh_items():
 			'id': i,
 			'item_id': item.id,
 			'size': item.amount,
-			'pickable': false,
 			'usable': item_database.is_item_usable(item.id)
 		});
-	update_interface(bag_item_container, bag_items);
+	update_interface(bag_item_container, bag_items, true);
 	
 	# Bag capacity
 	bag_capacity_label.text = str(inventory.cur_capacity).pad_decimals(1) + "/" + str(inventory.capacity).pad_decimals(1) + " kg";
@@ -150,44 +119,35 @@ func refresh_items():
 	else:
 		bag_capacity_label.add_color_override("font_color", Color(1,1,1));
 
-func on_item_pick(id):
-	if (item_picker && item_picker.has_method("pick_near_item")):
-		if (Input.is_key_pressed(KEY_CONTROL) && item_picker.has_method("get_near_item_amount")):
-			item_picker.pick_near_item(id, item_picker.get_near_item_amount(id));
-		else:
-			item_picker.pick_near_item(id, 1);
-		refresh_items();
-
-func on_item_used(id):
+func on_item_used(object):
+	if (object.source != 0):
+		return;
 	if (inventory && inventory.has_method("use_item")):
-		inventory.use_item(id);
+		inventory.use_item(object.id);
 
-func on_item_drop(id, all):
+func on_item_drop(object, all):
+	if (object.source != 0):
+		return;
 	if (inventory && inventory.has_method("drop_item")):
 		if (all && inventory.has_method("get_item_amount")):
-			inventory.drop_item(id, inventory.get_item_amount(id));
+			inventory.drop_item(object.id, inventory.get_item_amount(object.id));
 		else:
-			inventory.drop_item(id, 1);
+			inventory.drop_item(object.id, 1);
 
-func register_itemdrop_control(node, target, method):
-	itemdrop_controls.append({
-		'node': node,
-		'target': target,
-		'method': method
-	});
-
-func item_drag_drop(pos):
-	if (item_dragged < 0 || item_dragged >= inventory.items.size()):
+func pick_near_item(object, pick_all = false):
+	if (object.source != 1):
 		return;
-	
-	for i in itemdrop_controls:
-		if (!i.node.visible || !i.node.get_global_rect().has_point(pos)):
-			continue;
-		if (i.target && i.target.has_method(i.method)):
-			i.target.call(i.method, item_dragged);
+	if (item_picker && item_picker.has_method("pick_near_item")):
+		if ((pick_all || Input.is_key_pressed(KEY_CONTROL)) && item_picker.has_method("get_near_item_amount")):
+			item_picker.pick_near_item(object.id, item_picker.get_near_item_amount(object.id));
+		else:
+			item_picker.pick_near_item(object.id, 1);
+		refresh_items();
 
-func item_pressed(id):
-	item_dragged = id;
+func _item_dropped_at_bag(object):
+	if (object.source == 1):
+		pick_near_item(object, true);
 
-func on_item_dropped_to_near(id):
-	on_item_drop(id, true);
+func _item_dropped_at_near(object):
+	if (object.source == 0):
+		on_item_drop(object, true);
