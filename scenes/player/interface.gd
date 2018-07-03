@@ -4,9 +4,11 @@ const DRAG_PREVIEW_SIZE = 48.0;
 
 # Nodes
 onready var player = get_parent();
+onready var background = $background;
 onready var inventory = $inventory;
 onready var campfire = $campfire;
 onready var use_prog = $use_prog;
+onready var storage_ui = $storage_ui;
 
 # Variables
 var mouse_handler = [];
@@ -19,18 +21,21 @@ var item_dragged = null;
 
 func _ready():
 	# Reset everything
-	inventory.hide();
-	campfire.hide();
+	toggle_inventory(false);
 	mouse_handler.clear();
 	use_prog.hide();
 	use_prog.value = 0.0;
 	
+	# Create drag preview node
 	drag_preview = TextureRect.new();
 	add_child(drag_preview);
 	drag_preview.name = "drag_preview"
 	drag_preview.expand = true;
 	drag_preview.rect_size = Vector2(1.0, 1.0) * DRAG_PREVIEW_SIZE;
 	drag_preview.hide();
+	
+	background.hide();
+	get_tree().connect("screen_resized", self, "_resized");
 
 func handle_mouse(handler, handle):
 	if (handle && !mouse_handler.has(handler)):
@@ -50,7 +55,7 @@ func is_busy():
 func _input(event):
 	if (event is InputEventKey && event.pressed):
 		if (event.scancode == KEY_TAB):
-			toggle_inventory();
+			toggle_inventory(!inventory.visible);
 		
 		if (event.scancode == KEY_ESCAPE):
 			hide_all();
@@ -70,6 +75,11 @@ func _input(event):
 			drag_preview.rect_global_position = event.global_position - (Vector2(1.0, 1.0) * DRAG_PREVIEW_SIZE / 2);
 
 func _process(delta):
+	if (inventory.visible || campfire.visible || storage_ui.visible):
+		background.show();
+	else:
+		background.hide();
+	
 	if (use_prog.visible):
 		if (use_progress_curr >= use_progress_time):
 			use_prog.hide();
@@ -77,14 +87,17 @@ func _process(delta):
 			use_progress_curr = min(use_progress_curr + delta, use_progress_time);
 			use_prog.value = (use_progress_curr / use_progress_time) * 100.0;
 
-func toggle_inventory():
-	if (!inventory.visible):
+func _resized():
+	background.rect_global_position = Vector2();
+	background.rect_size = get_viewport().size;
+
+func toggle_inventory(show = false):
+	if (show):
 		inventory.show();
 		inventory.refresh_items();
-		inventory.grab_focus();
 		handle_mouse("inventory", true);
 		
-		if (campfire.visible):
+		if (campfire.visible || storage_ui.visible):
 			inventory.rect_position = Vector2(20, 20);
 			inventory.set_anchors_preset(Control.PRESET_LEFT_WIDE);
 		else:
@@ -97,30 +110,37 @@ func toggle_inventory():
 		
 		if (campfire.visible):
 			toggle_campfire();
+		if (storage_ui.visible):
+			toggle_storage();
 
 func toggle_campfire(object = null):
-	if (!campfire.visible):
-		if (!object):
-			return;
-		
+	if (object):
 		campfire.show();
 		campfire.campfire_object = object;
 		handle_mouse("campfire", true);
-		
-		if (!inventory.visible):
-			toggle_inventory();
+		toggle_inventory(true);
 	else:
 		campfire.hide();
 		handle_mouse("campfire", false);
-		
-		if (inventory.visible):
-			toggle_inventory();
+		toggle_inventory();
+
+func toggle_storage(object = null):
+	if (object):
+		storage_ui.show();
+		storage_ui.toggled(object);
+		storage_ui.refresh_items();
+		handle_mouse("storage", true);
+		toggle_inventory(true);
+	else:
+		storage_ui.hide();
+		storage_ui.toggled();
+		handle_mouse("storage", false);
+		toggle_inventory();
 
 func hide_all():
-	if (inventory.visible):
-		toggle_inventory();
-	if (campfire.visible):
-		toggle_campfire();
+	toggle_inventory();
+	toggle_campfire();
+	toggle_storage();
 
 func show_use_progress(time):
 	use_progress_time = time;

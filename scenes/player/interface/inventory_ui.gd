@@ -144,9 +144,24 @@ func pick_near_item(object, pick_all = false):
 			item_picker.pick_near_item(object.id, 1);
 		refresh_items();
 
+func grab_from_storage(object, all = false):
+	if (object.source != 2 || !object.storage):
+		return;
+	
+	var item = object.storage.get_item(object.id);
+	if (!item):
+		return;
+	var amount = 1;
+	if (all):
+		amount = item.amount;
+	if (object.storage.remove_item(object.id, amount)):
+		inventory.add_item(item.item_id, amount);
+
 func _item_dropped_at_bag(object):
 	if (object.source == 1):
 		pick_near_item(object, true);
+	if (object.source == 2):
+		grab_from_storage(object, true);
 
 func _item_dropped_at_near(object):
 	if (object.source == 0):

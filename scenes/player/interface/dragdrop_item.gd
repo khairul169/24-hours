@@ -20,7 +20,7 @@ func _input(event):
 		var in_rect = rect_object.get_global_rect().has_point(pos);
 		
 		if (event.button_index == BUTTON_LEFT && in_rect):
-			if (event.pressed && !pressed):
+			if (event.pressed):
 				if (interface && interface.has_method("item_pressed")):
 					interface.item_pressed(self);
 				emit_signal("pressed", self);
