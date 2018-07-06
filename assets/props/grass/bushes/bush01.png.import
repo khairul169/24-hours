@@ -2,13 +2,13 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/Snow_0.jpg-ffef2acf3ccd6e7e35c84bc5e5face5d.s3tc.stex"
-path.etc2="res://.import/Snow_0.jpg-ffef2acf3ccd6e7e35c84bc5e5face5d.etc2.stex"
+path.s3tc="res://.import/bush01.png-6348b0bde913406e22b4c4dedcfc1dc3.s3tc.stex"
+path.etc2="res://.import/bush01.png-6348b0bde913406e22b4c4dedcfc1dc3.etc2.stex"
 
 [deps]
 
-source_file="res://assets/textures/Snow_0.jpg"
-dest_files=[ "res://.import/Snow_0.jpg-ffef2acf3ccd6e7e35c84bc5e5face5d.s3tc.stex", "res://.import/Snow_0.jpg-ffef2acf3ccd6e7e35c84bc5e5face5d.etc2.stex" ]
+source_file="res://assets/props/grass/bushes/bush01.png"
+dest_files=[ "res://.import/bush01.png-6348b0bde913406e22b4c4dedcfc1dc3.s3tc.stex", "res://.import/bush01.png-6348b0bde913406e22b4c4dedcfc1dc3.etc2.stex" ]
 
 [params]
 

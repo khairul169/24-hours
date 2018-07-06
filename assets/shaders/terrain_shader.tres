@@ -5,25 +5,45 @@
 code = "shader_type spatial;
 uniform float uvscale = 1.0;
 
+varying float height;
 varying vec3 normal;
 
 void vertex() {
 	UV = UV * uvscale;
 	normal = NORMAL;
+	height = VERTEX.y;
 }
 
-uniform sampler2D snow_tex: hint_albedo;
+uniform sampler2D grass_tex: hint_albedo;
 uniform sampler2D cliff_tex: hint_albedo;
+uniform sampler2D sand_tex: hint_albedo;
+uniform sampler2D rocks_tex: hint_albedo;
+uniform sampler2D blend_map: hint_black;
+uniform sampler2D noise_tex: hint_black;
 uniform float slope_factor = 0.85;
 uniform float slope_blend = 30.0;
 
 void fragment() {
-	float slope = dot(normal, vec3(0, 1, 0));
-	vec3 col = texture(cliff_tex, UV).rgb;
+	vec4 tex_grass = texture(grass_tex, UV);
+	vec4 tex_rocks = texture(rocks_tex, UV);
 	
-	if (slope > slope_factor) {
-		float blend = clamp((slope - slope_factor) * slope_blend, 0.0, 1.0);
-		col = mix(col, texture(snow_tex, UV).rgb, blend);
+	float slope = dot(normal, vec3(0, 1, 0));
+	vec3 col = mix(tex_grass.rgb, tex_rocks.rgb, 1.0-texture(blend_map, UV2).r);
+	
+	if (slope <= slope_factor) {
+		float blend = clamp((slope_factor - slope) * slope_blend, 0.0, 1.0);
+		col = mix(col, texture(cliff_tex, UV).rgb, blend);
+	}
+	
+	float noise_blend = texture(noise_tex, UV).r;
+	float sand_level = 1.0 + (noise_blend * 1.0);
+	if (height <= sand_level) {
+		float blend = (sand_level - height) / 0.4;
+		col = mix(col, texture(sand_tex, UV).rgb, clamp(blend, 0.0, 1.0));
+	}
+	
+	if (height < 0.0) {
+		col = col * clamp(1.0 - abs(height / 5.0), 0.2, 1.0);
 	}
 	
 	ALBEDO.rgb = col;

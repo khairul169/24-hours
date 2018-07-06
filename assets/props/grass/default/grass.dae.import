@@ -2,17 +2,17 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/background01.dae-25a2f0bdff3e645d462776bbd705464a.scn"
+path="res://.import/grass.dae-258d40faeb7f18614f0fbf0759399ab3.scn"
 
 [deps]
 
-source_file="res://assets/terrain/background/background01.dae"
-dest_files=[ "res://.import/background01.dae-25a2f0bdff3e645d462776bbd705464a.scn" ]
+source_file="res://assets/props/grass/default/grass.dae"
+dest_files=[ "res://.import/grass.dae-258d40faeb7f18614f0fbf0759399ab3.scn" ]
 
 [params]
 
 nodes/root_type="Spatial"
-nodes/root_name="background"
+nodes/root_name="grass"
 nodes/root_scale=1.0
 nodes/custom_script=""
 nodes/storage=0

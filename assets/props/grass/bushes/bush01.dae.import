@@ -2,17 +2,17 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/tree01.dae-d17c1c44136472a2328feb17db06fc19.scn"
+path="res://.import/bush01.dae-d359e149dfb47d71ba7b8882848c2231.scn"
 
 [deps]
 
-source_file="res://assets/props/tree/tree01.dae"
-dest_files=[ "res://.import/tree01.dae-d17c1c44136472a2328feb17db06fc19.scn" ]
+source_file="res://assets/props/grass/bushes/bush01.dae"
+dest_files=[ "res://.import/bush01.dae-d359e149dfb47d71ba7b8882848c2231.scn" ]
 
 [params]
 
 nodes/root_type="Spatial"
-nodes/root_name="tree"
+nodes/root_name="bush01"
 nodes/root_scale=1.0
 nodes/custom_script=""
 nodes/storage=0

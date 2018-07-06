@@ -4,6 +4,7 @@ export (NodePath) var worldenv;
 export (NodePath) var sun_node;
 export (ProceduralSky) var sky;
 export var update_delay = 0.01;
+export (Color) var water_color;
 
 # Node
 onready var scene = get_parent();
@@ -13,14 +14,14 @@ var next_step = 0.0;
 
 # Sky colors
 var day_color = {
-	'top': Color(0.4, 0.5, 0.65) * 0.6,
-	'bot': Color(0.75, 0.8, 0.8) * 0.9,
-	'light': Color(0.63, 0.61, 0.62)
+	'top': Color(0.4, 0.5, 0.65) * 0.8,
+	'bot': Color(0.8, 0.8, 0.8),
+	'light': Color(0.83, 0.81, 0.82)
 };
 var night_color = {
 	'top': Color(0.04, 0.04, 0.1),
 	'bot': Color(0.02, 0.02, 0.06),
-	'light': Color(0.18, 0.17, 0.32)
+	'light': Color(0.28, 0.27, 0.42)
 };
 var evening_color = {
 	'top': Color(0.5, 0.45, 0.3),
@@ -101,6 +102,8 @@ func _process(delta):
 		bot_color = clerp(night_color.bot, day_color.bot, step);
 		light_col = clerp(night_color.light, day_color.light, step);
 	
+	var fog_color = clerp(top_color, bot_color, 0.6);
+	
 	# Set sky color
 	sky.sky_top_color = top_color;
 	sky.sky_horizon_color = bot_color;
@@ -119,7 +122,7 @@ func _process(delta):
 	# Set light color
 	sun_node.light_color = light_col;
 	worldenv.environment.ambient_light_color = light_col;
-	worldenv.environment.fog_color = clerp(top_color, bot_color, 0.4);
+	worldenv.environment.fog_color = fog_color;
 
 func clerp(from, to, step):
 	return from.linear_interpolate(to, step);

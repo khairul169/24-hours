@@ -90,13 +90,13 @@ current = false
 fov = 60.0
 size = 1.0
 near = 0.01
-far = 500.0
+far = 200.0
 script = ExtResource( 3 )
 _sections_unfolded = [ "Transform" ]
 enabled = true
 Controller = NodePath("..")
 bob_speed = 0.8
-bob_factor = 0.015
+bob_factor = 0.2
 min_weight = 1.2
 interpolation = 4.0
 

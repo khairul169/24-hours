@@ -1,19 +1,28 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://assets/terrain/terrain01.dae" type="PackedScene" id=1]
 [ext_resource path="res://assets/shaders/terrain_shader.tres" type="Shader" id=2]
-[ext_resource path="res://assets/textures/rock_d01.jpg" type="Texture" id=3]
-[ext_resource path="res://assets/textures/Snow_0.jpg" type="Texture" id=4]
+[ext_resource path="res://assets/textures/terrain_blendmap.jpg" type="Texture" id=3]
+[ext_resource path="res://assets/textures/rock_d01.jpg" type="Texture" id=4]
+[ext_resource path="res://assets/textures/fastgras01.jpg" type="Texture" id=5]
+[ext_resource path="res://assets/textures/noise.jpg" type="Texture" id=6]
+[ext_resource path="res://assets/textures/rock_01_diffuse.jpg" type="Texture" id=7]
+[ext_resource path="res://assets/textures/seamless_desert_sand_texture_by_hhh316-d311qn7.jpg" type="Texture" id=8]
+[ext_resource path="res://assets/props/water/water.tscn" type="PackedScene" id=9]
 
 [sub_resource type="ShaderMaterial" id=1]
 
 render_priority = 0
 shader = ExtResource( 2 )
-shader_param/uvscale = 10.0
-shader_param/slope_factor = 0.681395
-shader_param/slope_blend = 7.78601
-shader_param/snow_tex = ExtResource( 4 )
-shader_param/cliff_tex = ExtResource( 3 )
+shader_param/uvscale = 1.0
+shader_param/slope_factor = 0.712536
+shader_param/slope_blend = 40.0
+shader_param/grass_tex = ExtResource( 5 )
+shader_param/cliff_tex = ExtResource( 4 )
+shader_param/sand_tex = ExtResource( 8 )
+shader_param/rocks_tex = ExtResource( 7 )
+shader_param/blend_map = ExtResource( 3 )
+shader_param/noise_tex = ExtResource( 6 )
 _sections_unfolded = [ "Shader Param", "shader_param" ]
 
 [node name="terrain" index="0" instance=ExtResource( 1 )]
@@ -22,4 +31,7 @@ _sections_unfolded = [ "Shader Param", "shader_param" ]
 material_override = SubResource( 1 )
 cast_shadow = 0
 _sections_unfolded = [ "Geometry", "Transform", "material_override" ]
+
+[node name="water" parent="." index="2" instance=ExtResource( 9 )]
+transform = Transform( 1304.7, 0, 0, 0, 1304.7, 0, 0, 0, 1304.7, 0, 0, 0 )
 

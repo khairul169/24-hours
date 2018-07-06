@@ -2,13 +2,13 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/icon.png-487276ed1e3a0c39cad0279d744ee560.s3tc.stex"
-path.etc2="res://.import/icon.png-487276ed1e3a0c39cad0279d744ee560.etc2.stex"
+path.s3tc="res://.import/fastgras01.jpg-a0505740159f7d267091ddd6e7e13c42.s3tc.stex"
+path.etc2="res://.import/fastgras01.jpg-a0505740159f7d267091ddd6e7e13c42.etc2.stex"
 
 [deps]
 
-source_file="res://icon.png"
-dest_files=[ "res://.import/icon.png-487276ed1e3a0c39cad0279d744ee560.s3tc.stex", "res://.import/icon.png-487276ed1e3a0c39cad0279d744ee560.etc2.stex" ]
+source_file="res://assets/textures/fastgras01.jpg"
+dest_files=[ "res://.import/fastgras01.jpg-a0505740159f7d267091ddd6e7e13c42.s3tc.stex", "res://.import/fastgras01.jpg-a0505740159f7d267091ddd6e7e13c42.etc2.stex" ]
 
 [params]
 

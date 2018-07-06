@@ -2,13 +2,13 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/icon.png-487276ed1e3a0c39cad0279d744ee560.s3tc.stex"
-path.etc2="res://.import/icon.png-487276ed1e3a0c39cad0279d744ee560.etc2.stex"
+path.s3tc="res://.import/noise.jpg-217d788716c73446e351c15e94d8ca1e.s3tc.stex"
+path.etc2="res://.import/noise.jpg-217d788716c73446e351c15e94d8ca1e.etc2.stex"
 
 [deps]
 
-source_file="res://icon.png"
-dest_files=[ "res://.import/icon.png-487276ed1e3a0c39cad0279d744ee560.s3tc.stex", "res://.import/icon.png-487276ed1e3a0c39cad0279d744ee560.etc2.stex" ]
+source_file="res://assets/textures/noise.jpg"
+dest_files=[ "res://.import/noise.jpg-217d788716c73446e351c15e94d8ca1e.s3tc.stex", "res://.import/noise.jpg-217d788716c73446e351c15e94d8ca1e.etc2.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ flags/repeat=true
 flags/filter=true
 flags/mipmaps=true
 flags/anisotropic=false
-flags/srgb=1
+flags/srgb=2
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false

@@ -2,13 +2,13 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/tree_bark.jpg-88e7f25305a6013539d7f67cdb8b71c9.s3tc.stex"
-path.etc2="res://.import/tree_bark.jpg-88e7f25305a6013539d7f67cdb8b71c9.etc2.stex"
+path.s3tc="res://.import/grass.jpg-54b02467e30e42c0c09e673c62eb447d.s3tc.stex"
+path.etc2="res://.import/grass.jpg-54b02467e30e42c0c09e673c62eb447d.etc2.stex"
 
 [deps]
 
-source_file="res://assets/props/tree/tree_bark.jpg"
-dest_files=[ "res://.import/tree_bark.jpg-88e7f25305a6013539d7f67cdb8b71c9.s3tc.stex", "res://.import/tree_bark.jpg-88e7f25305a6013539d7f67cdb8b71c9.etc2.stex" ]
+source_file="res://assets/textures/grass.jpg"
+dest_files=[ "res://.import/grass.jpg-54b02467e30e42c0c09e673c62eb447d.s3tc.stex", "res://.import/grass.jpg-54b02467e30e42c0c09e673c62eb447d.etc2.stex" ]
 
 [params]
 
