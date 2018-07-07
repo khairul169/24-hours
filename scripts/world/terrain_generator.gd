@@ -1,7 +1,12 @@
 extends Reference
 
+# Ref
 var noise;
 var fractal;
+
+# Variable
+var _size;
+var _height;
 
 func _init():
 	noise = OsnNoise.new();
@@ -16,14 +21,18 @@ func _init():
 func set_seed(seeds):
 	noise.set_seed(seeds);
 
+func set_terrain_size(size, height):
+	_size = size;
+	_height = height;
+
 func get_height_at(pos):
 	if (typeof(pos) == TYPE_VECTOR2):
-		return fractal.get_noise_2dv(pos);
+		return fractal.get_noise_2dv(pos / _size) * _height;
 	if (typeof(pos) == TYPE_VECTOR3):
-		return fractal.get_noise_2d(pos.x, pos.z);
+		return fractal.get_noise_2dv(Vector2(pos.x, pos.z) / _size) * _height;
 	return 0.0;
 
-func generate_mesh(position, size, resolution, height, factor):
+func generate_mesh(position, size, resolution):
 	var surface = SurfaceTool.new();
 	surface.begin(Mesh.PRIMITIVE_TRIANGLES);
 	surface.add_smooth_group(true);
@@ -44,10 +53,10 @@ func generate_mesh(position, size, resolution, height, factor):
 			];
 			
 			var ht = [
-				fractal.get_noise_2dv((world_pos + pos[0]) / factor) * height,
-				fractal.get_noise_2dv((world_pos + pos[1]) / factor) * height,
-				fractal.get_noise_2dv((world_pos + pos[2]) / factor) * height,
-				fractal.get_noise_2dv((world_pos + pos[3]) / factor) * height
+				fractal.get_noise_2dv((world_pos + pos[0]) / _size) * _height,
+				fractal.get_noise_2dv((world_pos + pos[1]) / _size) * _height,
+				fractal.get_noise_2dv((world_pos + pos[2]) / _size) * _height,
+				fractal.get_noise_2dv((world_pos + pos[3]) / _size) * _height
 			];
 			
 			for i in ht:

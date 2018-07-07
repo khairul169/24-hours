@@ -2,13 +2,13 @@ extends Spatial
 
 # Configuration
 var bob_speed = 0.8;
-var bob_factor = 0.01;
+var bob_factor = 0.05;
 var bob_sprinting = 1.2;
 var bob_angle = 1.0;
-var sway_factor = 0.002;
-var sway_limit = 0.015;
-var camera_shifting = 0.02;
-var on_air_factor = 0.015;
+var sway_factor = 0.01;
+var sway_limit = 0.08;
+var camera_shifting = 0.1;
+var on_air_factor = 0.08;
 var interpolation = 8.0;
 
 ############################ DO NOT EDIT BELOW ###############################

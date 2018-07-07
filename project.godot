@@ -104,5 +104,4 @@ ui_end={
 quality/directional_shadow/size=2048
 quality/shadow_atlas/size=2048
 quality/shadows/filter_mode=0
-quality/voxel_cone_tracing/high_quality=false
 environment/default_environment="res://default_env.tres"

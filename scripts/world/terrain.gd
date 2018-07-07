@@ -25,32 +25,44 @@ var player_pos = Vector3();
 var current_chunk = [0, 0];
 var chunk_size = 50.0;
 var chunk_distance = 3;
-var terrain_height = 48.0;
+var terrain_height = 64.0;
+var terrain_size = 8.0;
 
 var thread = Thread.new();
-var mutex = Mutex.new();
 var terrain = TerrainGenerator.new();
 
 func _ready():
-	seed(seeds);
-	terrain.set_seed(seeds);
-	generate_world(current_chunk);
-	
 	if (player_node):
 		player_node = get_node(player_node);
+	
+	seed(seeds);
+	terrain.set_seed(seeds);
+	terrain.set_terrain_size(terrain_size, terrain_height);
+	
+	if (player_node):
+		player_pos = player_node.global_transform.origin;
+		# Find spawn point
+		for i in range(10):
+			var pos = player_pos + Vector3(rand_range(-500.0, 500.0), 0, rand_range(-500.0, 500.0));
+			var h = terrain.get_height_at(pos);
+			if (h < 2.0):
+				continue;
+			pos.y = h;
+			player_pos = pos;
+			break;
 		
-		var h = max(terrain.get_height_at(player_pos) * terrain_height, 0.0);
-		player_node.global_transform.origin.y = h + 2.0;
+		player_pos.y += 1.0;
+		player_node.global_transform.origin = player_pos;
+		current_chunk = chunk_from_pos(player_pos);
+	
+	# Build world
+	generate_world(current_chunk);
 
 func _physics_process(delta):
 	if (player_node):
 		player_pos = player_node.global_transform.origin;
 	
-	var player_chunk = [
-		int(floor(player_pos.x / chunk_size)),
-		int(floor(player_pos.z / chunk_size))
-	];
-	
+	var player_chunk = chunk_from_pos(player_pos);
 	if ((current_chunk[0] != player_chunk[0] || current_chunk[1] != player_chunk[1]) && !thread.is_active()):
 		thread.start(self, "generate_world", player_chunk, Thread.PRIORITY_HIGH);
 
@@ -84,6 +96,9 @@ func get_chunk_name(x, y):
 func chunk_from_name(name):
 	return str(name).split("_");
 
+func chunk_from_pos(pos):
+	return [int(floor(pos.x / chunk_size)), int(floor(pos.z / chunk_size))];
+
 func set_current_chunk(chunk):
 	if (thread.is_active()):
 		thread.wait_to_finish();
@@ -97,7 +112,7 @@ func load_chunk(name, position):
 	add_child(chunk, true);
 	
 	# Generate heightmap terrain mesh
-	var terrain_mesh = terrain.generate_mesh(position, chunk_size, 2.0, terrain_height, 5.0);
+	var terrain_mesh = terrain.generate_mesh(position, chunk_size, 2.0);
 	
 	# Create terrain mesh instance
 	if (terrain_mesh):
@@ -179,7 +194,7 @@ func create_tree(node, position):
 	instance.scale = Vector3(1, 1, 1) * rand_range(0.8, 1.6);
 
 func load_grass_instance(node, position, size):
-	var grass_instance_num = int(chunk_size * chunk_size / 1.0);
+	var grass_instance_num = int(chunk_size * chunk_size / 8.0);
 	var start_pos = node.global_transform.origin + position;
 	var grass_instances = [];
 	
