@@ -17,6 +17,7 @@ config/icon="res://icon.png"
 [autoload]
 
 item_database="*res://scripts/singleton/item_database.gd"
+utils="*res://scripts/singleton/utils.gd"
 
 [display]
 
@@ -104,5 +105,4 @@ ui_end={
 quality/directional_shadow/size=2048
 quality/shadow_atlas/size=2048
 quality/shadows/filter_mode=0
-quality/filters/msaa=2
 environment/default_environment="res://default_env.tres"

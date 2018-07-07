@@ -122,9 +122,12 @@ func use_item(slot_id):
 		return;
 	
 	# Dequip equipped item
-	if (slot_id == item_used):
-		unequip_item();
-		return;
+	if (item_used != null):
+		if (item_used == slot_id):
+			unequip_item();
+			return;
+		else:
+			unequip_item();
 	
 	# Item is not usable
 	var item_id = items[slot_id].id;
@@ -136,7 +139,6 @@ func use_item(slot_id):
 	# Structures
 	if (item_database.is_structure(item_id)):
 		use_structure(slot_id);
-		return;
 	
 	# Foods
 	if (item_database.foods.has(item_id)):
@@ -236,7 +238,7 @@ func spawn_item(id, pos, normal):
 	player.scene.add_child(instance);
 	
 	# Set object transform
-	instance.transform = instance.transform.looking_at(normal, Vector3(0, 1, 0));
+	instance.transform = utils.align_to_normal(instance.transform, normal);
 	instance.transform = instance.transform.rotated(normal, deg2rad(randi() % 360));
 	instance.global_transform.origin = pos;
 

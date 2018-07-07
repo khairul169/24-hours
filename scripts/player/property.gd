@@ -26,12 +26,15 @@ var screen_ray = null;
 var is_placing = false;
 var item_slot = -1;
 var placeholder_obj;
+var obj_rotation = 0.0;
 
 func _ready():
 	# Reset variable
 	pressing = false;
 	time_left = 0.0;
 	screen_ray = null;
+	is_placing = false;
+	item_slot = -1;
 	
 	# Structure placeholder
 	placeholder_obj = MeshInstance.new();
@@ -71,14 +74,26 @@ func _process(delta):
 			pressing = false;
 			interface.hide_use_progress();
 	
+	if (Input.is_key_pressed(KEY_R) && is_placing):
+		obj_rotation = fmod(obj_rotation + deg2rad(180) * delta, 2*PI);
+	
 	if (is_placing && placeholder_obj.is_inside_tree()):
+		# Reset object transform
+		placeholder_obj.transform = Transform();
+		
+		var test = Basis();
+		test = test.rotated(Vector3(1, 0, 0), -PI/2.0);
+		
 		var placeholder_col = Color(1, 0, 0, 0.4);
+		
 		if (screen_ray):
 			placeholder_col = Color(1, 1, 1, 0.4);
+			placeholder_obj.transform = utils.align_to_normal(placeholder_obj.transform, screen_ray.normal);
+			placeholder_obj.transform = placeholder_obj.transform.rotated(screen_ray.normal, obj_rotation);
 			placeholder_obj.global_transform.origin = screen_ray.origin;
-			placeholder_obj.transform = placeholder_obj.transform.looking_at(Vector3(1, 1, 1), screen_ray.normal);
+		
 		else:
-			placeholder_obj.transform = Transform();
+			placeholder_obj.transform = placeholder_obj.transform.rotated(Vector3(0, 1, 0), obj_rotation);
 			placeholder_obj.global_transform.origin = camera.global_transform.xform(Vector3(0, 0, -CAST_RANGE));
 		
 		# Set material color
@@ -158,8 +173,9 @@ func place_structure():
 	player.scene.add_child(instance, true);
 	
 	# Set object transform
+	instance.transform = utils.align_to_normal(Transform(), screen_ray.normal);
+	instance.transform = placeholder_obj.transform.rotated(screen_ray.normal, obj_rotation);
 	instance.global_transform.origin = screen_ray.origin;
-	instance.transform = instance.transform.looking_at(Vector3(1, 1, 1), screen_ray.normal);
 	
 	# Remove item from inventory
 	inventory.remove_item(item_slot, 1);

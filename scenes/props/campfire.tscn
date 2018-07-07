@@ -299,11 +299,12 @@ _sections_unfolded = [ "Transform", "Visibility" ]
 campfire_range = 6.0
 
 [node name="shape" type="CollisionShape" parent="." index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 1.06581e-14, 0, -1.06581e-14, 1, 0, 0, 0 )
 shape = SubResource( 1 )
 disabled = false
 
 [node name="light" type="OmniLight" parent="." index="1"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15033, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 1.06581e-14, 0, -1.06581e-14, 1, 0, 1.15033, 0 )
 layers = 1
 light_color = Color( 1, 0.545098, 0.180392, 1 )
 light_energy = 3.51
@@ -324,6 +325,7 @@ omni_shadow_mode = 1
 omni_shadow_detail = 1
 
 [node name="scene" parent="." index="2" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 1.06581e-14, 0, -1.06581e-14, 1, 0, 0, 0 )
 
 [node name="particle1" type="Particles" parent="." index="3"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.115279, 0 )

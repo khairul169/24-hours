@@ -48,12 +48,14 @@ func _init():
 	set_item_scene(ITEM_THERMOMETER, "res://assets/weapon/thermometer/world_item.tscn");
 	set_item_scene(ITEM_BOTTLED_WATER, "res://assets/props/foods/bottled_water.tscn");
 	set_item_scene(ITEM_CANNED_TUNA, "res://assets/props/foods/canned_tuna.tscn");
+	set_item_scene(ITEM_CAMPFIRE, "res://assets/props/campfire/item_scene.tscn");
 	
 	# Item title and description
 	translate_item(ITEM_STICK, "Stick", "Just a lonely stick. Can be used as a fuel source.");
 	translate_item(ITEM_THERMOMETER, "Thermometer", "Ancient stuff that can be used to examine body temperature.");
 	translate_item(ITEM_BOTTLED_WATER, "Bottled Water", "Fresh water from the nature");
 	translate_item(ITEM_CANNED_TUNA, "Canned Tuna", "Free food laying around that are ready to eat.");
+	translate_item(ITEM_CAMPFIRE, "Campfire", "Small light source.");
 	
 	# Structure data
 	register_structure(ITEM_CAMPFIRE, "res://scenes/props/campfire.tscn", "res://assets/props/campfire/placeholder.mesh");
