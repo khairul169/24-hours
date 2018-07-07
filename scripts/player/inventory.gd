@@ -2,10 +2,15 @@ extends Node
 
 # Node
 onready var player = get_parent();
-onready var inventory_ui = get_node("../interface/inventory");
+onready var inventory_ui = player.get_node("interface/inventory");
 onready var space_state = player.get_world().direct_space_state;
-onready var item_picker = get_node("../item_picker");
-onready var weapon = get_node("../weapon");
+onready var item_picker = player.get_node("item_picker");
+onready var weapon = player.get_node("weapon");
+onready var property = player.get_node("property");
+
+# Signals
+signal item_used(slot);
+signal item_removed(slot);
 
 # Variables
 var capacity = 0.0;
@@ -98,6 +103,8 @@ func remove_item(slot_id, count = 1):
 	
 	# Update inventory
 	update_item();
+	
+	emit_signal("item_removed", slot_id);
 	return true;
 
 func get_item_id(slot_id):
@@ -124,6 +131,13 @@ func use_item(slot_id):
 	if (!item_database.is_item_usable(item_id)):
 		return;
 	
+	emit_signal("item_used", slot_id);
+	
+	# Structures
+	if (item_database.is_structure(item_id)):
+		use_structure(slot_id);
+		return;
+	
 	# Foods
 	if (item_database.foods.has(item_id)):
 		consume_food(slot_id);
@@ -145,6 +159,7 @@ func use_item(slot_id):
 func unequip_item():
 	item_used = null;
 	weapon.set_current_weapon(weapon_hand);
+	property.use_structure(-1);
 
 func drop_item(slot_id, amount):
 	if (slot_id < 0 || slot_id >= items.size() || amount <= 0):
@@ -226,11 +241,21 @@ func spawn_item(id, pos, normal):
 	instance.global_transform.origin = pos;
 
 func consume_food(id):
+	if (id < 0 || id >= items.size()):
+		return;
 	var value = item_database.foods[items[id].id];
 	player.hunger = clamp(player.hunger + value, 0.0, 1.0);
 	remove_item(id, 1);
 
 func consume_drinks(id):
+	if (id < 0 || id >= items.size()):
+		return;
 	var value = item_database.drinks[items[id].id];
 	player.thirst = clamp(player.thirst + value, 0.0, 1.0);
 	remove_item(id, 1);
+
+func use_structure(id):
+	if (id < 0 || id >= items.size() || !property):
+		return;
+	item_used = id;
+	property.use_structure(id);

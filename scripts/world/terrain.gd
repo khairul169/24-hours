@@ -194,7 +194,7 @@ func create_tree(node, position):
 	instance.scale = Vector3(1, 1, 1) * rand_range(0.8, 1.6);
 
 func load_grass_instance(node, position, size):
-	var grass_instance_num = int(chunk_size * chunk_size / 8.0);
+	var grass_instance_num = int(chunk_size * chunk_size / 2.0);
 	var start_pos = node.global_transform.origin + position;
 	var grass_instances = [];
 	

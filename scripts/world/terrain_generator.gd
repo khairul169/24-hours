@@ -96,5 +96,5 @@ func generate_mesh(position, size, resolution):
 	surface.index();
 	surface.generate_normals();
 	var mesh = surface.commit();
-	#surface.clear();
+	surface.clear();
 	return mesh;

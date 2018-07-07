@@ -11,6 +11,9 @@ enum {
 	# Edible foods
 	ITEM_BOTTLED_WATER,
 	ITEM_CANNED_TUNA
+	
+	# Structures
+	ITEM_CAMPFIRE
 };
 
 var items = {};
@@ -18,12 +21,16 @@ var item_title = {};
 var item_description = {};
 
 # Item categories
+var structures = {};
+
 var usable_fuels = {
 	ITEM_STICK: 30.0
 };
+
 var foods = {
 	ITEM_CANNED_TUNA: 0.25
 };
+
 var drinks = {
 	ITEM_BOTTLED_WATER: 0.4
 };
@@ -34,6 +41,7 @@ func _init():
 	register_item(ITEM_THERMOMETER, "thermometer", 0.8, true);
 	register_item(ITEM_BOTTLED_WATER, "bottled_water", 0.2, true);
 	register_item(ITEM_CANNED_TUNA, "canned_tuna", 0.4, true);
+	register_item(ITEM_CAMPFIRE, "campfire", 0.4, true);
 	
 	# Item world scene
 	set_item_scene(ITEM_STICK, "res://assets/props/stick/stick.tscn");
@@ -46,6 +54,9 @@ func _init():
 	translate_item(ITEM_THERMOMETER, "Thermometer", "Ancient stuff that can be used to examine body temperature.");
 	translate_item(ITEM_BOTTLED_WATER, "Bottled Water", "Fresh water from the nature");
 	translate_item(ITEM_CANNED_TUNA, "Canned Tuna", "Free food laying around that are ready to eat.");
+	
+	# Structure data
+	register_structure(ITEM_CAMPFIRE, "res://scenes/props/campfire.tscn", "res://assets/props/campfire/placeholder.mesh");
 
 ############################################################################
 
@@ -88,8 +99,14 @@ func translate_item(id, title, desc):
 	item_title[id] = title;
 	item_description[id] = desc;
 
+func register_structure(id, scene, placeholder_mesh):
+	structures[id] = {'scene': load(scene), 'placeholder': load(placeholder_mesh)};
+
 func is_item_valid(id):
 	return items.has(id);
+
+func is_structure(id):
+	return structures.has(id);
 
 func get_item_by_name(name):
 	var return_id = ITEM_NONE;
@@ -144,3 +161,8 @@ func get_item_description(id):
 	if (item_description.has(id)):
 		return item_description[id];
 	return "";
+
+func get_structure_data(id):
+	if (!structures.has(id)):
+		return null;
+	return structures[id];

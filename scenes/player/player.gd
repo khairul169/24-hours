@@ -43,6 +43,7 @@ func _ready():
 	
 	# Give default item
 	inventory.add_item(item_database.ITEM_THERMOMETER);
+	inventory.add_item(item_database.ITEM_CAMPFIRE);
 	inventory.add_item(item_database.ITEM_STICK, int(rand_range(8.0, 14.0)));
 	inventory.add_item(item_database.ITEM_BOTTLED_WATER, 3);
 	inventory.add_item(item_database.ITEM_CANNED_TUNA, 2);
