@@ -7,10 +7,11 @@
 
 render_priority = 0
 shader = ExtResource( 1 )
-shader_param/albedo = Color( 0.6, 0.752941, 0.443137, 1 )
-shader_param/alpha_scissor_threshold = 0.2
-shader_param/transmission = Color( 0.294118, 0.294118, 0.294118, 1 )
+shader_param/grass1 = Color( 0.6, 0.752941, 0.439216, 1 )
+shader_param/grass2 = Color( 0.462745, 0.752941, 0.439216, 1 )
+shader_param/alpha_scissor_threshold = 0.3
+shader_param/transmission = Color( 0.29, 0.29, 0.29, 1 )
 shader_param/wave_amplitudo = 0.3
-shader_param/albedo_texture = ExtResource( 2 )
-_sections_unfolded = [ "Shader Param", "shader_param" ]
+shader_param/grass_texture = ExtResource( 2 )
+_sections_unfolded = [ "Shader Param", "shader", "shader_param" ]
 

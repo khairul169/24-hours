@@ -1,8 +1,9 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://assets/props/tree/palm_tree.dae" type="PackedScene" id=1]
+[ext_resource path="res://assets/props/tree/tree02/palm_tree.dae" type="PackedScene" id=1]
 [ext_resource path="res://assets/shaders/waving_leafs.tres" type="Shader" id=2]
-[ext_resource path="res://assets/props/tree/palm_tree.png" type="Texture" id=3]
+[ext_resource path="res://assets/props/tree/tree02/palm_tree.png" type="Texture" id=3]
+
 
 [sub_resource type="ShaderMaterial" id=1]
 

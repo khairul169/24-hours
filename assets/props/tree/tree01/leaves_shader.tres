@@ -1,0 +1,16 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=2]
+
+[ext_resource path="res://assets/shaders/waving_leafs.tres" type="Shader" id=1]
+[ext_resource path="res://assets/props/tree/tree01/textures/Tree Leaves.png" type="Texture" id=2]
+
+[resource]
+
+render_priority = 0
+shader = ExtResource( 1 )
+shader_param/albedo = Color( 1, 1, 1, 1 )
+shader_param/alpha_scissor_threshold = 0.2
+shader_param/transmission = Color( 0.345098, 0.345098, 0.345098, 1 )
+shader_param/wave_amplitudo = 0.1
+shader_param/albedo_texture = ExtResource( 2 )
+_sections_unfolded = [ "Shader Param" ]
+

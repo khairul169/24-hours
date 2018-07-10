@@ -1,12 +1,13 @@
-[gd_resource type="ShaderMaterial" load_steps=8 format=2]
+[gd_resource type="ShaderMaterial" load_steps=9 format=2]
 
 [ext_resource path="res://assets/shaders/terrain_shader.tres" type="Shader" id=1]
 [ext_resource path="res://assets/textures/terrain_blendmap.jpg" type="Texture" id=2]
-[ext_resource path="res://assets/textures/rock_d01.jpg" type="Texture" id=3]
-[ext_resource path="res://assets/textures/grass.jpg" type="Texture" id=4]
-[ext_resource path="res://assets/textures/noise.jpg" type="Texture" id=5]
-[ext_resource path="res://assets/textures/rock_weathered_10.jpg" type="Texture" id=6]
-[ext_resource path="res://assets/textures/seamless_desert_sand_texture_by_hhh316-d311qn7.jpg" type="Texture" id=7]
+[ext_resource path="res://assets/textures/rock_01_diffuse.jpg" type="Texture" id=3]
+[ext_resource path="res://assets/textures/fastgras01.jpg" type="Texture" id=4]
+[ext_resource path="res://assets/textures/grass.jpg" type="Texture" id=5]
+[ext_resource path="res://assets/textures/noise.jpg" type="Texture" id=6]
+[ext_resource path="res://assets/textures/rock_d01.jpg" type="Texture" id=7]
+[ext_resource path="res://assets/textures/seamless_desert_sand_texture_by_hhh316-d311qn7.jpg" type="Texture" id=8]
 
 [resource]
 
@@ -15,11 +16,12 @@ shader = ExtResource( 1 )
 shader_param/uvscale = 0.4
 shader_param/slope_factor = 0.9
 shader_param/slope_blend = 40.0
-shader_param/grass_tex = ExtResource( 4 )
+shader_param/grass_tex = ExtResource( 5 )
 shader_param/cliff_tex = ExtResource( 3 )
-shader_param/sand_tex = ExtResource( 7 )
-shader_param/rocks_tex = ExtResource( 6 )
+shader_param/sand_tex = ExtResource( 8 )
+shader_param/rocks_tex = ExtResource( 7 )
+shader_param/dirt_tex = ExtResource( 4 )
 shader_param/blend_map = ExtResource( 2 )
-shader_param/noise_tex = ExtResource( 5 )
-_sections_unfolded = [ "Shader Param", "shader_param" ]
+shader_param/noise_tex = ExtResource( 6 )
+_sections_unfolded = [ "Shader Param", "shader", "shader_param" ]
 

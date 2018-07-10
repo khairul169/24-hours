@@ -2,17 +2,17 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/palm_tree.dae-8ea82ffda4e5f6f598edec1b104825e8.scn"
+path="res://.import/rocks01.dae-3963bbb8144fe2129b4d14c7f32f75a5.scn"
 
 [deps]
 
-source_file="res://assets/props/tree/palm_tree.dae"
-dest_files=[ "res://.import/palm_tree.dae-8ea82ffda4e5f6f598edec1b104825e8.scn" ]
+source_file="res://assets/props/rocks/rocks01.dae"
+dest_files=[ "res://.import/rocks01.dae-3963bbb8144fe2129b4d14c7f32f75a5.scn" ]
 
 [params]
 
 nodes/root_type="Spatial"
-nodes/root_name="tree"
+nodes/root_name="rocks"
 nodes/root_scale=1.0
 nodes/custom_script=""
 nodes/storage=0

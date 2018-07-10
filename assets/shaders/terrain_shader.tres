@@ -18,6 +18,7 @@ uniform sampler2D grass_tex: hint_albedo;
 uniform sampler2D cliff_tex: hint_albedo;
 uniform sampler2D sand_tex: hint_albedo;
 uniform sampler2D rocks_tex: hint_albedo;
+uniform sampler2D dirt_tex: hint_albedo;
 uniform sampler2D blend_map: hint_black;
 uniform sampler2D noise_tex: hint_black;
 uniform float slope_factor = 0.85;
@@ -34,6 +35,9 @@ void fragment() {
 		float blend = clamp((slope_factor - slope) * slope_blend, 0.0, 1.0);
 		col = mix(col, texture(cliff_tex, UV).rgb, blend);
 	}
+	
+	// Dirt
+	col = mix(col, texture(dirt_tex, UV).rgb, COLOR.r);
 	
 	float noise_blend = texture(noise_tex, UV).r;
 	float sand_level = 1.0 + (noise_blend * 1.0);

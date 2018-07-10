@@ -148,7 +148,7 @@ script = ExtResource( 3 )
 _sections_unfolded = [ "Transform" ]
 enabled = true
 bob_speed = 0.8
-bob_factor = 0.2
+bob_factor = 0.1
 min_weight = 1.2
 interpolation = 4.0
 

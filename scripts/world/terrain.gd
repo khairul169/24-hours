@@ -6,10 +6,13 @@ export var seeds = 0;
 export (Material) var terrain_material;
 export (NodePath) var player_node;
 export (PackedScene) var water_scene;
-export (PackedScene) var tree_scene;
+export (PackedScene) var rocks_scene;
+export (Array) var tree_scenes;
 export (Mesh) var grass_mesh;
 export (Material) var grass_material;
 export (PackedScene) var bush_scene;
+
+signal chunks_updated(chunks);
 
 # Grass type
 enum {
@@ -19,15 +22,19 @@ enum {
 
 # World space state
 onready var space_state = get_world().direct_space_state;
+onready var player = get_parent().get_node("player");
 
 # Variables
 var player_pos = Vector3();
 var current_chunk = [0, 0];
+var active_chunks = {};
 var chunk_size = 50.0;
 var chunk_distance = 3;
 var terrain_height = 64.0;
-var terrain_size = 8.0;
-var grass_intensity = 0.85;
+var terrain_size = 16.0;
+var rocks_intensity = 0.1;
+var tree_intensity = 0.6;
+var grass_intensity = 0.65;
 
 var thread = Thread.new();
 var terrain = TerrainGenerator.new();
@@ -76,7 +83,7 @@ func generate_world(chunk):
 			var x = j - (chunk_distance - 1) + chunk[0];
 			var y = i - (chunk_distance - 1) + chunk[1];
 			var node_name = get_chunk_name(x, y);
-			new_chunks[node_name] = true;
+			new_chunks[node_name] = [x, y];
 	
 	for i in get_children():
 		if (!new_chunks.has(i.name)):
@@ -88,7 +95,7 @@ func generate_world(chunk):
 				var position = Vector3(chunk_pos[0], 0, chunk_pos[1]) * chunk_size;
 				load_chunk(i, position);
 	
-	call_deferred("set_current_chunk", chunk);
+	call_deferred("update_chunk", chunk, new_chunks);
 	return true;
 
 func get_chunk_name(x, y):
@@ -100,10 +107,14 @@ func chunk_from_name(name):
 func chunk_from_pos(pos):
 	return [int(floor(pos.x / chunk_size)), int(floor(pos.z / chunk_size))];
 
-func set_current_chunk(chunk):
+func update_chunk(chunk, new_chunks):
 	if (thread.is_active()):
 		thread.wait_to_finish();
+	
+	# Set current chunk
 	current_chunk = chunk;
+	active_chunks = new_chunks;
+	emit_signal("chunks_updated", new_chunks);
 
 func load_chunk(name, position):
 	# Create chunk
@@ -112,23 +123,34 @@ func load_chunk(name, position):
 	chunk.transform.origin = position;
 	add_child(chunk, true);
 	
+	var outpost = null;
+	if (randf() <= 0.2):
+		var size = int(rand_range(chunk_size * 0.25, chunk_size * 0.4));
+		outpost = {
+			'position': Vector3(1, 0, 1) * (chunk_size) * 0.5,
+			'size': size
+		};
+	
 	# Generate heightmap terrain mesh
-	var terrain_mesh = terrain.generate_mesh(position, chunk_size, 2.0);
+	var terrain_mesh = terrain.generate_mesh(position, chunk_size, 5.0, outpost);
 	
 	# Create terrain mesh instance
-	if (terrain_mesh):
-		create_terrain(chunk, terrain_mesh);
+	create_terrain(chunk, terrain_mesh);
 	
-	if (water_scene):
-		call_deferred("create_water", chunk);
+	# Create props
+	call_deferred("create_water", chunk);
+	call_deferred("create_outpost", chunk, outpost);
+	call_deferred("create_rocks", chunk);
 	
 	# Terrain vegetation
 	var veg = Spatial.new();
 	veg.name = "vegetation";
 	chunk.add_child(veg);
-	load_vegetation(chunk, veg);
+	load_vegetation(chunk, veg, outpost);
 
 func create_terrain(node, mesh):
+	if (!mesh):
+		return;
 	var instance = MeshInstance.new();
 	instance.name = "terrain";
 	node.add_child(instance, true);
@@ -153,19 +175,74 @@ func create_water(node):
 	instance.scale = Vector3(chunk_size, 1, chunk_size);
 	node.add_child(instance);
 
-func load_vegetation(chunk, parent):
+func create_outpost(node, outpost):
+	if (!node || !space_state || !outpost):
+		return;
+	
+	var outpos_position = node.global_transform.origin + outpost.position;
+	var ray = space_state.intersect_ray(outpos_position + Vector3(0, terrain_height, 0), outpos_position - Vector3(0, terrain_height, 0), [player]);
+	if (ray.size() > 0):
+		outpos_position.y = ray.position.y;
+	
+	if (outpos_position.y < 0.0 || outpos_position.y > terrain_height * 0.5):
+		return;
+	
+	var instance = preload("res://assets/outpost/outpost01/outpost01.tscn").instance();
+	instance.name = "outpost";
+	node.add_child(instance, true);
+	
+	# Set outpost transform
+	instance.global_transform.origin = outpos_position;
+	instance.rotation = Vector3(0, 1, 0) * randf() * 2.0 * PI;
+	
+	for i in instance.get_children():
+		if (!i is MeshInstance):
+			continue;
+		
+		var pos = i.global_transform.origin;
+		ray = space_state.intersect_ray(pos + Vector3(0, terrain_height, 0), pos - Vector3(0, terrain_height, 0), [player, i]);
+		if (ray.size() > 0):
+			pos.y = ray.position.y;
+		
+		# Set the position
+		i.global_transform.origin = pos;
+
+func create_rocks(chunk):
+	if (!rocks_scene || !space_state):
+		return;
+	
+	var start_pos = chunk.global_transform.origin;
+	var instance_count = randi() % int(chunk_size * rocks_intensity);
+	for i in range(instance_count):
+		var pos = start_pos + Vector3(randf() * chunk_size, 0, randf() * chunk_size);
+		var ray = space_state.intersect_ray(pos + Vector3(0, terrain_height, 0), pos - Vector3(0, terrain_height, 0), [player]);
+		if (ray.size() > 0):
+			pos.y = ray.position.y;
+		if (pos.y < 0.0):
+			continue;
+		
+		var instance = rocks_scene.instance();
+		chunk.add_child(instance);
+		instance.global_transform.origin = pos;
+		instance.rotation = Vector3(0, 1, 0) * randf() * 2 * PI;
+		instance.scale = Vector3(1, 1, 1) * rand_range(1.0, 3.2);
+
+func load_vegetation(chunk, parent, outpost):
 	if (!space_state):
 		return;
 	
 	var start_pos = parent.global_transform.origin;
-	var tree_amount = randi() % int(chunk_size / 2.0);
+	var tree_amount = randi() % int(chunk_size * tree_intensity);
 	
 	for i in range(tree_amount):
 		var pos = start_pos + Vector3(randf() * chunk_size, 0, randf() * chunk_size);
-		var ray = space_state.intersect_ray(pos + Vector3(0, terrain_height, 0), pos - Vector3(0, terrain_height, 0), [get_node("../player")]);
+		var ray = space_state.intersect_ray(pos + Vector3(0, terrain_height, 0), pos - Vector3(0, terrain_height, 0), [player]);
 		if (ray.size() > 0):
 			pos.y = ray.position.y;
 		else:
+			continue;
+		
+		if (outpost && Vector3(pos.x - start_pos.x, 0.0, pos.z - start_pos.z).distance_to(outpost.position) < outpost.size):
 			continue;
 		
 		# Spawn height level
@@ -180,13 +257,13 @@ func load_vegetation(chunk, parent):
 	for i in range(grass_chunk_num):
 		for j in range(grass_chunk_num):
 			var pos = Vector3(i, 0, j) * grass_chunk_size;
-			load_grass_instance(parent, pos, grass_chunk_size);
+			load_grass_instance(parent, pos, grass_chunk_size, outpost);
 
 func create_tree(node, position):
-	if (!tree_scene || !node || !node.is_inside_tree()):
+	if (!tree_scenes || !node || !node.is_inside_tree()):
 		return;
 	
-	var instance = tree_scene.instance();
+	var instance = tree_scenes[randi() % tree_scenes.size()].instance();
 	instance.name = "tree";
 	node.add_child(instance, true);
 	
@@ -194,14 +271,18 @@ func create_tree(node, position):
 	instance.rotation_degrees = Vector3(0, randf() * 360.0, 0);
 	instance.scale = Vector3(1, 1, 1) * rand_range(0.8, 1.6);
 
-func load_grass_instance(node, position, size):
+func load_grass_instance(node, position, size, outpost):
 	var grass_instance_num = int(chunk_size * chunk_size * grass_intensity);
 	var start_pos = node.global_transform.origin + position;
 	var grass_instances = [];
 	
 	for i in range(grass_instance_num):
 		var pos = start_pos + Vector3(randf(), 0, randf()) * size;
-		var ray = space_state.intersect_ray(pos + Vector3(0, terrain_height, 0), pos - Vector3(0, terrain_height, 0), [get_node("../player")]);
+		var parent_pos = node.global_transform.origin;
+		if (outpost && Vector3(pos.x - parent_pos.x, 0.0, pos.z - parent_pos.z).distance_to(outpost.position) < outpost.size && randf() > 0.1):
+			continue;
+		
+		var ray = space_state.intersect_ray(pos + Vector3(0, terrain_height, 0), pos - Vector3(0, terrain_height, 0), [player]);
 		if (ray.size() > 0):
 			if (!ray.collider.get_parent().name.begins_with("terrain")):
 				continue;
@@ -211,7 +292,7 @@ func load_grass_instance(node, position, size):
 		else:
 			continue;
 		
-		if (pos.y < 1.0):
+		if (pos.y < 2.0):
 			continue;
 		
 		# Grass type
@@ -235,6 +316,7 @@ func create_grass(node, position, instances):
 	
 	var grass_multimesh = MultiMesh.new();
 	grass_multimesh.mesh = grass_mesh;
+	grass_multimesh.color_format = MultiMesh.COLOR_8BIT;
 	grass_multimesh.transform_format = MultiMesh.TRANSFORM_3D;
 	
 	grass_instance.multimesh = grass_multimesh;
@@ -268,3 +350,8 @@ func create_grass(node, position, instances):
 		tr = tr.scaled(Vector3(1, 1, 1) * (0.6 + randf() * 1.2));
 		tr.origin = grass_default[i];
 		grass_multimesh.set_instance_transform(i, tr);
+		
+		if (randf() > 0.6):
+			grass_multimesh.set_instance_color(i, Color(1, 0, 0));
+		else:
+			grass_multimesh.set_instance_color(i, Color(0, 0, 0));

@@ -1,5 +1,13 @@
 extends StaticBody
 
+enum STORAGE_TYPE {
+	EMPTY = 0,
+	FOODS,
+	STICK,
+	
+	MAX_NUM
+};
+
 signal item_updated();
 
 var is_opened = false;
@@ -7,9 +15,16 @@ var items = [];
 
 func _ready():
 	is_opened = false;
-	#add_item(item_database.ITEM_CANNED_TUNA, 4);
-	#add_item(item_database.ITEM_STICK, 14);
-	#add_item(item_database.ITEM_BOTTLED_WATER, 5);
+	
+	# Randomize storage type
+	var storage_type = randi() % STORAGE_TYPE.MAX_NUM;
+	
+	if (storage_type == FOODS):
+		add_item(item_database.ITEM_CANNED_TUNA, 1 + randi() % 2);
+		add_item(item_database.ITEM_BOTTLED_WATER, 1 + randi() % 3);
+	
+	if (storage_type == STICK):
+		add_item(item_database.ITEM_STICK, 4 + randi() % 8);
 
 func remove_item(id, amount = 1):
 	if (id < 0 || id >= items.size()):

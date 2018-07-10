@@ -25,14 +25,17 @@ func set_terrain_size(size, height):
 	_size = size;
 	_height = height;
 
-func get_height_at(pos):
+func get_height_clamped(pos):
 	if (typeof(pos) == TYPE_VECTOR2):
-		return fractal.get_noise_2dv(pos / _size) * _height;
+		return clamp(fractal.get_noise_2dv(pos / _size), -1.0, 1.0);
 	if (typeof(pos) == TYPE_VECTOR3):
-		return fractal.get_noise_2dv(Vector2(pos.x, pos.z) / _size) * _height;
+		return clamp(fractal.get_noise_2dv(Vector2(pos.x, pos.z) / _size), -1.0, 1.0);
 	return 0.0;
 
-func generate_mesh(position, size, resolution):
+func get_height_at(pos):
+	return get_height_clamped(pos) * _height;
+
+func generate_mesh(position, size, resolution, outpost = null):
 	var surface = SurfaceTool.new();
 	surface.begin(Mesh.PRIMITIVE_TRIANGLES);
 	surface.add_smooth_group(true);
@@ -68,27 +71,33 @@ func generate_mesh(position, size, resolution):
 			var uv2_size = 20.0;
 			
 			# triangle 1
+			surface.add_color(calculate_color(pos[0], outpost));
 			surface.add_uv(Vector2(pos[0].x, pos[0].y));
 			surface.add_uv2(Vector2(pos[0].x, pos[0].y) / uv2_size);
 			surface.add_vertex(Vector3(pos[0].x, ht[0], pos[0].y));
 			
+			surface.add_color(calculate_color(pos[1], outpost));
 			surface.add_uv(Vector2(pos[1].x, pos[1].y));
 			surface.add_uv2(Vector2(pos[1].x, pos[1].y) / uv2_size);
 			surface.add_vertex(Vector3(pos[1].x, ht[1], pos[1].y));
 			
+			surface.add_color(calculate_color(pos[2], outpost));
 			surface.add_uv(Vector2(pos[2].x, pos[2].y));
 			surface.add_uv2(Vector2(pos[2].x, pos[2].y) / uv2_size);
 			surface.add_vertex(Vector3(pos[2].x, ht[2], pos[2].y));
 			
 			# triangle 2
+			surface.add_color(calculate_color(pos[2], outpost));
 			surface.add_uv(Vector2(pos[2].x, pos[2].y));
 			surface.add_uv2(Vector2(pos[2].x, pos[2].y) / uv2_size);
 			surface.add_vertex(Vector3(pos[2].x, ht[2], pos[2].y));
 			
+			surface.add_color(calculate_color(pos[3], outpost));
 			surface.add_uv(Vector2(pos[3].x, pos[3].y));
 			surface.add_uv2(Vector2(pos[3].x, pos[3].y) / uv2_size);
 			surface.add_vertex(Vector3(pos[3].x, ht[3], pos[3].y));
 			
+			surface.add_color(calculate_color(pos[0], outpost));
 			surface.add_uv(Vector2(pos[0].x, pos[0].y));
 			surface.add_uv2(Vector2(pos[0].x, pos[0].y) / uv2_size);
 			surface.add_vertex(Vector3(pos[0].x, ht[0], pos[0].y));
@@ -98,3 +107,11 @@ func generate_mesh(position, size, resolution):
 	var mesh = surface.commit();
 	surface.clear();
 	return mesh;
+
+func calculate_color(pos, outpost):
+	var col = Color(0, 0, 0, 0);
+	if (!outpost):
+		return col;
+	var distance = outpost.position.distance_to(Vector3(pos.x, 0.0, pos.y));
+	col.r = lerp(0.0, 1.0, clamp((outpost.size - distance) / 0.1, 0.0, 1.0));
+	return col;
